@@ -6,7 +6,7 @@ require (
 	github.com/coreos/go-semver v0.3.0 // indirect
 	github.com/coreos/go-systemd/v22 v22.3.2 // indirect
 	github.com/fengjx/daox v1.0.0-rc5 // indirect
-	github.com/fengjx/go-halo v0.0.1-rc14 // indirect
+	github.com/fengjx/go-halo v0.0.1-rc15 // indirect
 	github.com/fengjx/luchen v1.0.0-rc9 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.2 // indirect

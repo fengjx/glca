@@ -10,6 +10,11 @@ import (
 var appConfig AppConfig
 
 func init() {
+	appConfigFile, err := fs.Lookup("conf/app.yml", 3)
+	if err != nil {
+		luchen.RootLogger().Panic("config file not found")
+	}
+	configs := []string{appConfigFile}
 	var configFile string
 	envConfigPath := os.Getenv("APP_CONFIG")
 	if envConfigPath != "" {
@@ -18,18 +23,14 @@ func init() {
 	if configFile == "" && len(os.Args) > 1 {
 		configFile = os.Args[1]
 	}
-	if configFile == "" {
-		confFile, err := fs.Lookup("conf/app.yaml", 3)
+	if configFile != "" {
+		configFile, err = fs.Lookup(configFile, 3)
 		if err != nil {
-			luchen.RootLogger().Panic("config file not found")
+			panic(err)
 		}
-		configFile = confFile
+		configs = append(configs, configFile)
 	}
-	configFile, err := fs.Lookup(configFile, 3)
-	if err != nil {
-		panic(err)
-	}
-	appConfig = luchen.MustLoadConfig[AppConfig](configFile)
+	appConfig = luchen.MustLoadConfig[AppConfig](configs...)
 }
 
 type AppConfig struct {

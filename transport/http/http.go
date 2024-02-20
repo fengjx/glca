@@ -9,6 +9,8 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/fengjx/luchen"
+
+	"github.com/fengjx/glca/connom/errno"
 )
 
 const (
@@ -57,18 +59,17 @@ func errorEncoder(ctx context.Context, err error, w http.ResponseWriter) {
 	ok := errors.As(err, &errn)
 	if !ok {
 		log.Error("handler error", zap.Error(err))
-		msg := luchen.ErrSystem.Msg
+		msg := errno.SystemErr.Msg
 		if !luchen.IsProd() {
 			msg = err.Error()
 		}
 		res := &result{
-			Code: luchen.ErrSystem.Code,
+			Code: errno.SystemErr.Code,
 			Msg:  msg,
 		}
 		writeData(res)
 		return
 	}
-
 	if errn.HTTPCode > 0 {
 		httpCode = errn.HTTPCode
 	}
