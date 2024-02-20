@@ -1,0 +1,11 @@
+package {{.TableVar.module}}
+{{$ObjName := GonicCase .Table.Name}}
+{{$VarObjName := FirstLower $ObjName}}
+
+type {{$VarObjName}}Service struct {
+}
+
+func new{{$ObjName}}Service() *{{$VarObjName}}Service {
+	inst := &{{$VarObjName}}Service{}
+	return inst
+}

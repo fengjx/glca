@@ -1,0 +1,6 @@
+
+POST {{BaseURL}}/hello/say-hello
+Content-Type: application/x-www-form-urlencoded
+
+name = fengjx
+
