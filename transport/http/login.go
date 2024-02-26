@@ -17,7 +17,7 @@ func newLoginHandler() *loginHandler {
 }
 
 func (h *loginHandler) Bind(router luchen.HTTPRouter) {
-	router.Route(pathAPI+"/user", func(r chi.Router) {
+	router.Route(openAPI+"/user", func(r chi.Router) {
 		r.Handle("/login", h.login())
 	})
 }
@@ -29,7 +29,7 @@ func (h *loginHandler) login() *httptransport.Server {
 	return luchen.NewHTTPHandler(
 		sys.GetInst().Endpoints.MakeLoginEndpoint(),
 		luchen.DecodeJSONRequest[pb.LoginReq],
-		luchen.CreateHTTPJSONEncoder(httpResponseWrapper),
+		luchen.EncodeHTTPJSON(httpResponseWrapper),
 		options...,
 	)
 }

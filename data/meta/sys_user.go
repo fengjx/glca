@@ -14,6 +14,7 @@ import (
 // SysUserM 用户信息表
 // auto generate by gen cmd tool
 type SysUserM struct {
+    TableName string
     ID string
     Username string
     Pwd string
@@ -28,6 +29,7 @@ type SysUserM struct {
 }
 
 var SysUserMeta = SysUserM{
+    TableName: "sys_user",
     ID: "id",
     Username: "username",
     Pwd: "pwd",

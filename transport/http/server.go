@@ -22,6 +22,7 @@ func GetServer() *luchen.HTTPServer {
 		).Handler(
 			newGreeterHandler(),
 			newLoginHandler(),
+			newAdminCommonHandler(),
 		)
 	})
 	return server

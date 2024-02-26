@@ -2,10 +2,10 @@ package http
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"net/http"
 
+	"github.com/fengjx/go-halo/json"
 	"go.uber.org/zap"
 
 	"github.com/fengjx/luchen"
@@ -14,7 +14,9 @@ import (
 )
 
 const (
-	pathAPI = "/openapi"
+	openAPI  = "/openapi"
+	adminAPI = "/admin"
+	sysAPI   = adminAPI + "/sys"
 )
 
 type result struct {
@@ -31,30 +33,18 @@ func httpResponseWrapper(data interface{}) interface{} {
 	return res
 }
 
-// 统一返回值处理
-func encodeResponse(ctx context.Context, w http.ResponseWriter, response interface{}) error {
-	res := &result{
-		Msg:  "ok",
-		Data: response,
-	}
-	logger := luchen.Logger(ctx)
-	logger.Info("http response", zap.Any("data", res))
-	w.Header().Set("Content-Type", "application/json")
-	return json.NewEncoder(w).Encode(res)
-}
-
 // 统一异常处理
 func errorEncoder(ctx context.Context, err error, w http.ResponseWriter) {
 	log := luchen.Logger(ctx)
-
-	writeData := func(res *result) {
+	writeData := func(httpCode int, res *result) {
+		w.WriteHeader(httpCode)
+		w.Header().Set("Content-Type", "application/json")
 		err = json.NewEncoder(w).Encode(res)
 		if err != nil {
 			log.Error("write error msg fail", zap.Error(err))
 		}
 	}
 
-	httpCode := 500
 	var errn *luchen.Errno
 	ok := errors.As(err, &errn)
 	if !ok {
@@ -67,16 +57,16 @@ func errorEncoder(ctx context.Context, err error, w http.ResponseWriter) {
 			Code: errno.SystemErr.Code,
 			Msg:  msg,
 		}
-		writeData(res)
+		writeData(errno.SystemErr.HTTPCode, res)
 		return
 	}
+	httpCode := 500
 	if errn.HTTPCode > 0 {
 		httpCode = errn.HTTPCode
 	}
-	w.WriteHeader(httpCode)
 	res := &result{
 		Code: errn.Code,
 		Msg:  errn.Msg,
 	}
-	writeData(res)
+	writeData(httpCode, res)
 }

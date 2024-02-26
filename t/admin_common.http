@@ -1,0 +1,41 @@
+
+### common insert
+POST {{BaseURL}}/admin/common/insert
+Content-Type: application/json
+
+{
+  "table_name": "sys_user",
+  "row": {
+    "username": "fengjx2",
+    "pwd": "1234",
+    "salt": "hello",
+    "nickname": "fjx2"
+  }
+}
+
+
+### common query
+POST {{BaseURL}}/admin/common/query
+Content-Type: application/json
+
+{
+  "table_name": "sys_user",
+  "fields": [
+    "id",
+    "username",
+    "nickname",
+    "ctime"
+  ],
+  "order_fields": [
+    {
+      "field": "ctime",
+      "order_type": "desc"
+    }
+  ],
+  "page": {
+    "offset": 0,
+    "limit": 20,
+    "count": 0,
+    "query_count": true
+  }
+}
