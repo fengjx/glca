@@ -8,6 +8,7 @@ import (
 	"github.com/go-kit/kit/endpoint"
 	"go.uber.org/zap"
 
+	"github.com/fengjx/glca/connom/auth"
 	"github.com/fengjx/glca/connom/errno"
 	"github.com/fengjx/glca/connom/kit"
 	"github.com/fengjx/glca/data/entity"
@@ -16,8 +17,8 @@ import (
 
 func (e *endpoints) MakeLoginEndpoint() endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
-		log := luchen.Logger(ctx)
 		req := request.(*pb.LoginReq)
+		log := luchen.Logger(ctx).With(zap.String("username", req.Username))
 		userSvc := GetInst().UserSvc
 		user, err := userSvc.getByUsername(ctx, req.Username)
 		if err != nil {
@@ -34,8 +35,16 @@ func (e *endpoints) MakeLoginEndpoint() endpoint.Endpoint {
 		if !checkPassword(user, req.Password) {
 			return nil, errno.PasswordErr
 		}
+		token, err := auth.GenToken(auth.LoginPayload{
+			UID: user.ID,
+		})
+		if err != nil {
+			log.Error("gen token err", zap.Error(err))
+			return nil, err
+		}
 		resp := &pb.LoginResp{}
 		resp.UserInfo = buildUserInfoPB(user)
+		resp.Token = token
 		return resp, nil
 	}
 }

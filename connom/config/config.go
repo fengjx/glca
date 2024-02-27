@@ -2,6 +2,7 @@ package config
 
 import (
 	"os"
+	"strings"
 
 	"github.com/fengjx/go-halo/fs"
 	"github.com/fengjx/luchen"
@@ -10,7 +11,7 @@ import (
 var appConfig AppConfig
 
 func init() {
-	appConfigFile, err := fs.Lookup("conf/app.yml", 3)
+	appConfigFile, err := fs.Lookup("conf/app.yml", 5)
 	if err != nil {
 		luchen.RootLogger().Panic("config file not found")
 	}
@@ -23,8 +24,8 @@ func init() {
 	if configFile == "" && len(os.Args) > 1 {
 		configFile = os.Args[1]
 	}
-	if configFile != "" {
-		configFile, err = fs.Lookup(configFile, 3)
+	if strings.HasSuffix(configFile, "yml") || strings.HasSuffix(configFile, "yaml") {
+		configFile, err = fs.Lookup(configFile, 5)
 		if err != nil {
 			panic(err)
 		}
@@ -35,12 +36,18 @@ func init() {
 
 type AppConfig struct {
 	Server Server                  `json:"server"`
+	Auth   AuthConfig              `json:"auth"`
 	DB     map[string]*DbConfig    `json:"db"`
 	Redis  map[string]*RedisConfig `json:"redis"`
 }
 
 type Server struct {
 	HTTP HTTPServerConfig
+}
+
+type AuthConfig struct {
+	Version string `json:"version"`
+	Secret  string `json:"secret"`
 }
 
 type HTTPServerConfig struct {
