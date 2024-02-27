@@ -6,10 +6,9 @@ Content-Type: application/json
 {
   "table_name": "sys_user",
   "row": {
-    "username": "fengjx2",
+    "username": "fengjx",
     "pwd": "1234",
-    "salt": "hello",
-    "nickname": "fjx2"
+    "nickname": "fjx"
   }
 }
 

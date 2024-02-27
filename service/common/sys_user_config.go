@@ -19,17 +19,17 @@ func newSysUserConfig() tableConfig {
 
 	insertDataWrapper := func(ctx context.Context, src map[string]any) map[string]any {
 		pwd := utils.ToString(src[m.Pwd])
-		salt := utils.ToString(src[m.Salt])
-		if pwd == "" || salt == "" {
+		if pwd == "" {
 			delete(src, m.Pwd)
-			delete(src, m.Salt)
 			return src
 		}
+		salt := utils.RandomString(6)
 		sb := strings.Builder{}
 		sb.WriteString(pwd)
 		sb.WriteString(salt)
 		md5Pwd := kit.MD5Hash(sb.String())
 		src[m.Pwd] = md5Pwd
+		src[m.Salt] = salt
 		return src
 	}
 	cfg := tableConfig{

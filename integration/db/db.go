@@ -4,6 +4,7 @@ import (
 	"log"
 	"strings"
 
+	"github.com/fengjx/luchen"
 	_ "github.com/go-sql-driver/mysql"
 
 	"github.com/jmoiron/sqlx"
@@ -17,7 +18,7 @@ var defaultDB *sqlx.DB
 
 var toLowerMapper = reflectx.NewMapperFunc("json", strings.ToLower)
 
-func Init() {
+func init() {
 	for k, c := range config.GetConfig().DB {
 		db, err := sqlx.Open(c.Type, c.Dsn)
 		if err != nil {
@@ -35,6 +36,7 @@ func Init() {
 		}
 		db.Mapper = toLowerMapper
 		dbMap[k] = db
+		luchen.RootLogger().Infof("init db[%s]", k)
 	}
 	defaultDB = dbMap["default"]
 }

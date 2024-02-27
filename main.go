@@ -8,7 +8,6 @@ import (
 
 	"github.com/fengjx/luchen"
 
-	"github.com/fengjx/glca/integration/db"
 	"github.com/fengjx/glca/service"
 	"github.com/fengjx/glca/transport"
 )
@@ -17,7 +16,6 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	logger := luchen.Logger(ctx)
 	logger.Info("app start")
-	db.Init()
 	service.Init()
 	transport.Start(ctx)
 

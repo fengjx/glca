@@ -43,8 +43,8 @@ func (e *endpoints) MakeLoginEndpoint() endpoint.Endpoint {
 // checkPassword 检查密码是否匹配
 func checkPassword(user *entity.SysUser, password string) bool {
 	sb := strings.Builder{}
-	sb.WriteString(user.Salt)
 	sb.WriteString(password)
+	sb.WriteString(user.Salt)
 	md5Pwd := kit.MD5Hash(sb.String())
 	return user.Pwd == md5Pwd
 }
