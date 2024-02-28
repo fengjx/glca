@@ -48,18 +48,14 @@ func GenToken(payload LoginPayload) (string, error) {
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString(secret)
+	jwtToken, err := token.SignedString(secret)
 	if err != nil {
 		return "", err
 	}
-
 	h := header{
 		Version: version,
 	}
-	hd, _ := json.ToJson(h)
-	hs := base64.RawURLEncoding.EncodeToString([]byte(hd))
-	ts := base64.RawURLEncoding.EncodeToString([]byte(tokenString))
-	tk := strings.Join([]string{hs, ts}, ".")
+	tk := encode(h, jwtToken)
 	return tk, nil
 }
 
@@ -78,6 +74,14 @@ func Parse(token string) (payload LoginPayload, err error) {
 		return claims.LoginPayload, nil
 	}
 	return
+}
+
+func encode(h header, jwtToken string) string {
+	hd, _ := json.ToJson(h)
+	hs := base64.RawURLEncoding.EncodeToString([]byte(hd))
+	ts := base64.RawURLEncoding.EncodeToString([]byte(jwtToken))
+	token := strings.Join([]string{hs, ts}, ".")
+	return token
 }
 
 func decode(token string) (h header, jwtToken string, err error) {
