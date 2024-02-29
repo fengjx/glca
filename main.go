@@ -8,16 +8,18 @@ import (
 
 	"github.com/fengjx/luchen"
 
-	"github.com/fengjx/glca/service"
-	"github.com/fengjx/glca/transport"
+	"github.com/fengjx/glca/logic"
+	"github.com/fengjx/glca/transport/http"
 )
 
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	logger := luchen.Logger(ctx)
 	logger.Info("app start")
-	service.Init()
-	transport.Start(ctx)
+
+	httpServer := http.GetServer()
+	logic.Init(ctx, httpServer)
+	luchen.StartWithContext(ctx, httpServer)
 
 	quit := make(chan os.Signal)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGKILL)
@@ -25,5 +27,5 @@ func main() {
 	<-quit
 	logger.Info("app stop")
 	cancel()
-	transport.Stop(ctx)
+	luchen.Stop()
 }

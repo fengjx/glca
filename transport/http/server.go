@@ -19,10 +19,8 @@ func GetServer() *luchen.HTTPServer {
 		server = luchen.NewHTTPServer(
 			luchen.WithServiceName(serverConfig.ServerName),
 			luchen.WithServerAddr(serverConfig.Listen),
-		).Handler(
-			newGreeterHandler(),
-			newLoginHandler(),
-			newAdminCommonHandler(),
+		).Use(
+			authMiddleware,
 		)
 	})
 	return server

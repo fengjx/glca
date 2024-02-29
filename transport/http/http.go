@@ -13,19 +13,13 @@ import (
 	"github.com/fengjx/glca/connom/errno"
 )
 
-const (
-	openAPI  = "/openapi"
-	adminAPI = "/admin"
-	sysAPI   = adminAPI + "/sys"
-)
-
 type result struct {
 	Code int    `json:"code,omitempty"`
 	Msg  string `json:"msg,omitempty"`
 	Data any    `json:"data,omitempty"`
 }
 
-func httpResponseWrapper(data interface{}) interface{} {
+func ResponseWrapper(data interface{}) interface{} {
 	res := &result{
 		Msg:  "ok",
 		Data: data,
@@ -33,8 +27,8 @@ func httpResponseWrapper(data interface{}) interface{} {
 	return res
 }
 
-// 统一异常处理
-func errorEncoder(ctx context.Context, err error, w http.ResponseWriter) {
+// ErrorEncoder 统一异常处理
+func ErrorEncoder(ctx context.Context, err error, w http.ResponseWriter) {
 	log := luchen.Logger(ctx)
 	writeData := func(httpCode int, res *result) {
 		w.WriteHeader(httpCode)
@@ -69,4 +63,14 @@ func errorEncoder(ctx context.Context, err error, w http.ResponseWriter) {
 		Msg:  errn.Msg,
 	}
 	writeData(httpCode, res)
+}
+
+func authMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		token := r.Header.Get("requestHeaderToken")
+		if token != "" {
+
+		}
+		next.ServeHTTP(w, r)
+	})
 }
