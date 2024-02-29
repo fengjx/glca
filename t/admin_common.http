@@ -21,8 +21,12 @@ Content-Type: application/json
   "table_name": "sys_user",
   "fields": [
     "id",
+    "email",
+    "avatar",
+    "phone",
     "username",
     "nickname",
+    "status",
     "ctime"
   ],
   "order_fields": [

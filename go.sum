@@ -19,6 +19,8 @@ github.com/fengjx/luchen v1.0.0-rc10 h1:2vccE9TFoAtbbMdf3VCldjonEq/MAURcNOF+1TOi
 github.com/fengjx/luchen v1.0.0-rc10/go.mod h1:v+9pstv+fknD4YhtSD5xFRsU3MiBcZXDHhfuPNhjDZE=
 github.com/fengjx/luchen v1.0.0-rc9 h1:8rQsxuY+OOVfLbIN3vQLExzHleD+HzYhUfWgUcTamek=
 github.com/fengjx/luchen v1.0.0-rc9/go.mod h1:v+9pstv+fknD4YhtSD5xFRsU3MiBcZXDHhfuPNhjDZE=
+github.com/fengjx/luchen v1.0.0-rc9.0.20240229170543-77762a924d7c h1:xUSYPLyX62IlKXizsh4t9VEbXMEuGhktH7mrcKfR9Vg=
+github.com/fengjx/luchen v1.0.0-rc9.0.20240229170543-77762a924d7c/go.mod h1:v+9pstv+fknD4YhtSD5xFRsU3MiBcZXDHhfuPNhjDZE=
 github.com/frankban/quicktest v1.14.6 h1:7Xjx+VpznH+oBnejlPUj8oUpdxnVs4f8XU8WnHkI4W8=
 github.com/fsnotify/fsnotify v1.7.0 h1:8JEhPFa5W2WU7YfeZzPNqzMP6Lwt7L2715Ggo0nosvA=
 github.com/fsnotify/fsnotify v1.7.0/go.mod h1:40Bi/Hjc2AVfZrqy+aj+yEI+/bRxZnMJyTJwOpGvigM=

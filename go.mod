@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/fengjx/daox v1.0.1-rc01
 	github.com/fengjx/go-halo v0.0.1-rc15
-	github.com/fengjx/luchen v1.0.0-rc10
+	github.com/fengjx/luchen v1.0.0-rc9.0.20240229170543-77762a924d7c
 	github.com/go-chi/chi/v5 v5.0.11
 	github.com/go-kit/kit v0.13.0
 	github.com/go-sql-driver/mysql v1.7.1

@@ -28,7 +28,7 @@ func (h *loginHandler) login() *httptransport.Server {
 	}
 	return luchen.NewHTTPHandler(
 		MakeLoginEndpoint(),
-		luchen.DecodeJSONRequest[pb.LoginReq],
+		luchen.DecodeHTTPJSONRequest[pb.LoginReq],
 		luchen.EncodeHTTPJSON(http.ResponseWrapper),
 		options...,
 	)

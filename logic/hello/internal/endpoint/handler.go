@@ -28,7 +28,7 @@ func (h *greeterHandler) sayHello() *httptransport.Server {
 	}
 	return luchen.NewHTTPHandler(
 		MakeSayHelloEndpoint(),
-		luchen.DecodeParamHTTPRequest[pb.HelloReq],
+		luchen.DecodeHTTPParamRequest[pb.HelloReq],
 		luchen.EncodeHTTPJSON(http.ResponseWrapper),
 		options...,
 	)

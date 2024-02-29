@@ -8,7 +8,7 @@ import (
 	"github.com/fengjx/luchen"
 	"go.uber.org/zap"
 
-	"github.com/fengjx/glca/data/vo"
+	"github.com/fengjx/glca/connom/data/vo"
 	"github.com/fengjx/glca/integration/db"
 	"github.com/fengjx/glca/logic/sys/syspub"
 )

@@ -19,7 +19,7 @@ func main() {
 
 	httpServer := http.GetServer()
 	logic.Init(ctx, httpServer)
-	luchen.StartWithContext(ctx, httpServer)
+	luchen.Start(httpServer)
 
 	quit := make(chan os.Signal)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGKILL)
