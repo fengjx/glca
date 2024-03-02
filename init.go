@@ -3,9 +3,9 @@ package main
 import (
 	"time"
 
-	"github.com/json-iterator/go/extra"
+	"github.com/fengjx/go-halo/json"
 )
 
 func init() {
-	extra.RegisterTimeAsInt64Codec(time.Millisecond)
+	json.RegisterTimeAsInt64Codec(time.Millisecond)
 }

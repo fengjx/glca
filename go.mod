@@ -1,15 +1,18 @@
 module github.com/fengjx/glca
 
-go 1.20
+go 1.22
 
 require (
-	github.com/fengjx/daox v1.0.1-rc01
-	github.com/fengjx/go-halo v0.0.1-rc15
-	github.com/fengjx/luchen v1.0.0-rc9.0.20240229170543-77762a924d7c
+	github.com/fengjx/daox v1.0.1-rc01.0.20240302044337-54c1f04c3a3e
+	github.com/fengjx/go-halo v0.0.2
+	github.com/fengjx/luchen v1.0.1-rc02
 	github.com/go-chi/chi/v5 v5.0.11
 	github.com/go-kit/kit v0.13.0
 	github.com/go-sql-driver/mysql v1.7.1
+	github.com/golang-jwt/jwt/v5 v5.2.0
 	github.com/jmoiron/sqlx v1.3.5
+	github.com/magiconair/properties v1.8.7
+	github.com/samber/lo v1.38.1
 	go.uber.org/zap v1.26.0
 	google.golang.org/grpc v1.60.1
 	google.golang.org/protobuf v1.32.0
@@ -26,7 +29,6 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.16.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
-	github.com/golang-jwt/jwt/v5 v5.2.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/uuid v1.4.0 // indirect
@@ -34,7 +36,6 @@ require (
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/leodido/go-urn v1.2.4 // indirect
-	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
@@ -42,7 +43,6 @@ require (
 	github.com/petermattis/goid v0.0.0-20230904192822-1876fd5063bc // indirect
 	github.com/sagikazarmark/locafero v0.4.0 // indirect
 	github.com/sagikazarmark/slog-shim v0.1.0 // indirect
-	github.com/samber/lo v1.38.1 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
 	github.com/spf13/afero v1.11.0 // indirect
 	github.com/spf13/cast v1.6.0 // indirect

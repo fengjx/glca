@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	"github.com/fengjx/luchen"
+	"github.com/fengjx/luchen/http/middleware"
 
 	"github.com/fengjx/glca/connom/config"
 )
@@ -20,7 +21,11 @@ func GetServer() *luchen.HTTPServer {
 			luchen.WithServiceName(serverConfig.ServerName),
 			luchen.WithServerAddr(serverConfig.Listen),
 		).Use(
-			authMiddleware,
+			middleware.Recoverer,
+			middleware.RequestID,
+			middleware.RealIP,
+			middleware.AllowAll().Handler,
+			adminAuthMiddleware,
 		)
 	})
 	return server

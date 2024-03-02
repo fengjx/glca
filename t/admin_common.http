@@ -6,29 +6,19 @@ Content-Type: application/json
 {
   "table_name": "sys_user",
   "row": {
-    "username": "fengjx",
+    "username": "fengjx3",
     "pwd": "1234",
-    "nickname": "fjx"
+    "nickname": "fjx3"
   }
 }
 
 
 ### common query
-POST {{BaseURL}}/admin/common/query
+GET {{BaseURL}}/admin/common/query
 Content-Type: application/json
 
 {
   "table_name": "sys_user",
-  "fields": [
-    "id",
-    "email",
-    "avatar",
-    "phone",
-    "username",
-    "nickname",
-    "status",
-    "ctime"
-  ],
   "order_fields": [
     {
       "field": "ctime",
@@ -37,7 +27,7 @@ Content-Type: application/json
   ],
   "page": {
     "offset": 0,
-    "limit": 20,
+    "limit": 10,
     "count": 0,
     "query_count": true
   }

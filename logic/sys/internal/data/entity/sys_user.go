@@ -8,7 +8,6 @@ import (
 
 
 // SysUser 用户信息表
-// auto generate by gen cmd tool
 type SysUser struct {
     ID int64 `json:"id"` // -
     Username string `json:"username"` // 用户名

@@ -5,6 +5,7 @@ import (
 
 	"github.com/fengjx/luchen"
 
+	_ "github.com/fengjx/glca/logic/sys/internal/dao"
 	"github.com/fengjx/glca/logic/sys/internal/endpoint"
 )
 

@@ -3,7 +3,6 @@ package endpoint
 import (
 	"github.com/fengjx/daox"
 	"github.com/fengjx/luchen"
-	"github.com/go-chi/chi/v5"
 	httptransport "github.com/go-kit/kit/transport/http"
 
 	"github.com/fengjx/glca/transport/http"
@@ -16,14 +15,13 @@ func newAdminCommonHandler() *adminCommonHandler {
 	return &adminCommonHandler{}
 }
 
-func (h *adminCommonHandler) Bind(router luchen.HTTPRouter) {
-	router.Route("/admin/common", func(r chi.Router) {
-		r.Handle("/insert", h.insert())
-		r.Handle("/query", h.query())
-		r.Handle("/get", h.get())
-		r.Handle("/update", h.update())
-		r.Handle("/delete", h.delete())
-	})
+func (h *adminCommonHandler) Bind(router *luchen.ServeMux) {
+	commonAPI := http.AdminAPI + "/common"
+	router.Handle(commonAPI+"/insert", h.insert())
+	router.Handle(commonAPI+"/query", h.query())
+	router.Handle(commonAPI+"/get", h.get())
+	router.Handle(commonAPI+"/update", h.update())
+	router.Handle(commonAPI+"/delete", h.delete())
 }
 
 func (h *adminCommonHandler) query() *httptransport.Server {

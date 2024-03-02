@@ -2,7 +2,6 @@ package endpoint
 
 import (
 	"github.com/fengjx/luchen"
-	"github.com/go-chi/chi/v5"
 	httptransport "github.com/go-kit/kit/transport/http"
 
 	"github.com/fengjx/glca/pb"
@@ -16,10 +15,9 @@ func newGreeterHandler() *greeterHandler {
 	return &greeterHandler{}
 }
 
-func (h *greeterHandler) Bind(router luchen.HTTPRouter) {
-	router.Route("/hello", func(r chi.Router) {
-		r.Handle("/say-hello", h.sayHello())
-	})
+func (h *greeterHandler) Bind(router *luchen.ServeMux) {
+	helloAPI := "/hello"
+	router.Handle(helloAPI+"/say-hello", h.sayHello())
 }
 
 func (h *greeterHandler) sayHello() *httptransport.Server {
