@@ -7,3 +7,20 @@ type PageVO[T any] struct {
 	Count   int64 `json:"count"`
 	HasNext bool  `json:"has_next"`
 }
+
+func (v *PageVO[T]) ToAmisVO() *AmisPageVO[T] {
+	if v == nil {
+		return nil
+	}
+	return &AmisPageVO[T]{
+		Items:   v.List,
+		Count:   v.Count,
+		HasNext: v.HasNext,
+	}
+}
+
+type AmisPageVO[T any] struct {
+	Items   []T   `json:"items"`
+	Count   int64 `json:"count"`
+	HasNext bool  `json:"hasNext"`
+}

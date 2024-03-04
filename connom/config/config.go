@@ -50,9 +50,15 @@ type AuthConfig struct {
 	Secret  string `json:"secret"`
 }
 
+// CorsConfig 跨域配置
+type CorsConfig struct {
+	AllowOrigins []string `json:"allow-origins"`
+}
+
 type HTTPServerConfig struct {
-	ServerName string `json:"server-name"`
-	Listen     string `json:"listen"`
+	ServerName string     `json:"server-name"`
+	Listen     string     `json:"listen"`
+	Cors       CorsConfig `json:"cors"`
 }
 
 type DbConfig struct {

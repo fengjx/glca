@@ -2,6 +2,12 @@ server:
   http:
     server-name: "glca"
     listen: ":8080"
+    cors:
+      allow-origins:
+        - "http://localhost:3000"
+        - "http://localhost:3001"
+        - "http://127.0.0.1:3000"
+        - "http://127.0.0.1:3000"
 auth:
   version: 1
   secret: G7UtU3LLGC0xrPJSHO32bCh6z7XXV6jC

@@ -21,7 +21,7 @@ func MakeQueryEndpoint() endpoint.Endpoint {
 		if err != nil {
 			return nil, err
 		}
-		return pageVO, nil
+		return pageVO.ToAmisVO(), nil
 	}
 }
 

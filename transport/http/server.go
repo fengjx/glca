@@ -1,6 +1,7 @@
 package http
 
 import (
+	"net/http"
 	"sync"
 
 	"github.com/fengjx/luchen"
@@ -24,7 +25,19 @@ func GetServer() *luchen.HTTPServer {
 			middleware.Recoverer,
 			middleware.RequestID,
 			middleware.RealIP,
-			middleware.AllowAll().Handler,
+			middleware.CorsHandler(middleware.CorsOptions{
+				AllowedOrigins: serverConfig.Cors.AllowOrigins,
+				AllowedMethods: []string{
+					http.MethodHead,
+					http.MethodGet,
+					http.MethodPost,
+					http.MethodPut,
+					http.MethodPatch,
+					http.MethodDelete,
+				},
+				AllowedHeaders:   []string{"*"},
+				AllowCredentials: true,
+			}),
 			adminAuthMiddleware,
 		)
 	})

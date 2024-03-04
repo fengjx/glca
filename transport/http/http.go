@@ -14,23 +14,23 @@ import (
 )
 
 const (
-	StatusOK = 200
+	StatusOK = 0
 
 	AdminAPI = "/admin"
 	OpenAPI  = "/api"
 )
 
 type result struct {
-	Code int    `json:"code,omitempty"`
-	Msg  string `json:"msg,omitempty"`
-	Data any    `json:"data,omitempty"`
+	Status int    `json:"code,omitempty"`
+	Msg    string `json:"msg,omitempty"`
+	Data   any    `json:"data,omitempty"`
 }
 
 func ResponseWrapper(data interface{}) interface{} {
 	res := &result{
-		Code: StatusOK,
-		Msg:  "ok",
-		Data: data,
+		Status: StatusOK,
+		Msg:    "ok",
+		Data:   data,
 	}
 	return res
 }
@@ -56,8 +56,8 @@ func ErrorEncoder(ctx context.Context, err error, w http.ResponseWriter) {
 			msg = err.Error()
 		}
 		res := &result{
-			Code: errno.SystemErr.Code,
-			Msg:  msg,
+			Status: errno.SystemErr.Code,
+			Msg:    msg,
 		}
 		writeData(errno.SystemErr.HTTPCode, res)
 		return
@@ -67,8 +67,8 @@ func ErrorEncoder(ctx context.Context, err error, w http.ResponseWriter) {
 		httpCode = errn.HTTPCode
 	}
 	res := &result{
-		Code: errn.Code,
-		Msg:  errn.Msg,
+		Status: errn.Code,
+		Msg:    errn.Msg,
 	}
 	writeData(httpCode, res)
 }
