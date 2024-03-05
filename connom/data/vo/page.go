@@ -13,14 +13,12 @@ func (v *PageVO[T]) ToAmisVO() *AmisPageVO[T] {
 		return nil
 	}
 	return &AmisPageVO[T]{
-		Items:   v.List,
-		Count:   v.Count,
-		HasNext: v.HasNext,
+		Items: v.List,
+		Total: v.Count,
 	}
 }
 
 type AmisPageVO[T any] struct {
-	Items   []T   `json:"items"`
-	Count   int64 `json:"count"`
-	HasNext bool  `json:"hasNext"`
+	Items []T   `json:"items"`
+	Total int64 `json:"total"`
 }

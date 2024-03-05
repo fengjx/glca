@@ -31,7 +31,7 @@ func (h *adminCommonHandler) query() *httptransport.Server {
 	return luchen.NewHTTPHandler(
 		MakeQueryEndpoint(),
 		luchen.DecodeHTTPJSONRequest[daox.QueryRecord],
-		luchen.EncodeHTTPJSON(http.ResponseWrapper),
+		luchen.EncodeHTTPJSONResponse(http.ResponseWrapper),
 		options...,
 	)
 }
@@ -43,7 +43,7 @@ func (h *adminCommonHandler) get() *httptransport.Server {
 	return luchen.NewHTTPHandler(
 		MakeGetEndpoint(),
 		luchen.DecodeHTTPJSONRequest[daox.GetRecord],
-		luchen.EncodeHTTPJSON(http.ResponseWrapper),
+		luchen.EncodeHTTPJSONResponse(http.ResponseWrapper),
 		options...,
 	)
 }
@@ -55,7 +55,7 @@ func (h *adminCommonHandler) insert() *httptransport.Server {
 	return luchen.NewHTTPHandler(
 		MakeInsertEndpoint(),
 		luchen.DecodeHTTPJSONRequest[daox.InsertRecord],
-		luchen.EncodeHTTPJSON(http.ResponseWrapper),
+		luchen.EncodeHTTPJSONResponse(http.ResponseWrapper),
 		options...,
 	)
 }
@@ -67,7 +67,7 @@ func (h *adminCommonHandler) update() *httptransport.Server {
 	return luchen.NewHTTPHandler(
 		MakeUpdateEndpoint(),
 		luchen.DecodeHTTPJSONRequest[daox.UpdateRecord],
-		luchen.EncodeHTTPJSON(http.ResponseWrapper),
+		luchen.EncodeHTTPJSONResponse(http.ResponseWrapper),
 		options...,
 	)
 }
@@ -79,7 +79,7 @@ func (h *adminCommonHandler) delete() *httptransport.Server {
 	return luchen.NewHTTPHandler(
 		MakeDeleteEndpoint(),
 		luchen.DecodeHTTPJSONRequest[daox.DeleteRecord],
-		luchen.EncodeHTTPJSON(http.ResponseWrapper),
+		luchen.EncodeHTTPJSONResponse(http.ResponseWrapper),
 		options...,
 	)
 }

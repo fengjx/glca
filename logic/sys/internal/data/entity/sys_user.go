@@ -18,6 +18,7 @@ type SysUser struct {
     Avatar string `json:"avatar"` // 头像
     Phone string `json:"phone"` // 手机号
     Status string `json:"status"` // 用户状态
+    Remark string `json:"remark"` // 备注
     Utime time.Time `json:"utime"` // 更新时间
     Ctime time.Time `json:"ctime"` // 创建时间
 }

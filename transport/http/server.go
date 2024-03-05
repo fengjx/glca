@@ -39,7 +39,7 @@ func GetServer() *luchen.HTTPServer {
 				AllowCredentials: true,
 			}),
 			adminAuthMiddleware,
-		)
+		).Static("/static/", "static")
 	})
 	return server
 }

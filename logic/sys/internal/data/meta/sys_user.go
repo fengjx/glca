@@ -24,6 +24,7 @@ var SysUserColumns = []string{
     "avatar",
     "phone",
     "status",
+    "remark",
     "utime",
     "ctime",
 }
@@ -39,6 +40,7 @@ type SysUserM struct {
     Avatar string
     Phone string
     Status string
+    Remark string
     Utime string
     Ctime string
 }
@@ -53,6 +55,7 @@ var SysUserMeta = SysUserM{
     Avatar: "avatar",
     Phone: "phone",
     Status: "status",
+    Remark: "remark",
     Utime: "utime",
     Ctime: "ctime",
 }
@@ -578,6 +581,64 @@ func (m SysUserM) StatusDesc() sqlbuilder.OrderBy {
 
 func (m SysUserM) StatusAsc() sqlbuilder.OrderBy {
 	return ql.Asc(m.Status)
+}
+
+
+
+func (m SysUserM) RemarkIn(vals ...string) sqlbuilder.Column {
+	var args []any
+    for _, val := range vals {
+        args = append(args, val)
+    }
+    return ql.Col(m.Remark).In(args...)
+}
+
+func (m SysUserM) RemarkNotIn(vals ...string) sqlbuilder.Column {
+	var args []any
+    for _, val := range vals {
+        args = append(args, val)
+    }
+    return ql.Col(m.Remark).NotIn(args...)
+}
+
+func (m SysUserM) RemarkEQ(val string) sqlbuilder.Column {
+	return ql.Col(m.Remark).EQ(val)
+}
+
+func (m SysUserM) RemarkNotEQ(val string) sqlbuilder.Column {
+	return ql.Col(m.Remark).NotEQ(val)
+}
+
+func (m SysUserM) RemarkLT(val string) sqlbuilder.Column {
+	return ql.Col(m.Remark).LT(val)
+}
+
+func (m SysUserM) RemarkLTEQ(val string) sqlbuilder.Column {
+	return ql.Col(m.Remark).LTEQ(val)
+}
+
+func (m SysUserM) RemarkGT(val string) sqlbuilder.Column {
+	return ql.Col(m.Remark).GT(val)
+}
+
+func (m SysUserM) RemarkGTEQ(val string) sqlbuilder.Column {
+	return ql.Col(m.Remark).GTEQ(val)
+}
+
+func (m SysUserM) RemarkLike(val string) sqlbuilder.Column {
+	return ql.Col(m.Remark).Like(val)
+}
+
+func (m SysUserM) RemarkNotLike(val string) sqlbuilder.Column {
+	return ql.Col(m.Remark).NotLike(val)
+}
+
+func (m SysUserM) RemarkDesc() sqlbuilder.OrderBy {
+	return ql.Desc(m.Remark)
+}
+
+func (m SysUserM) RemarkAsc() sqlbuilder.OrderBy {
+	return ql.Asc(m.Remark)
 }
 
 

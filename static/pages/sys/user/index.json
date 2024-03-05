@@ -1,0 +1,352 @@
+{
+  "type": "page",
+  "name": "sys-user",
+  "body": [
+    {
+      "type": "crud",
+      "name": "sys_user",
+      "api": {
+        "method": "post",
+        "url": "${API_BASEURL}/admin/common/query",
+        "data": {
+          "table_name": "sys_user",
+          "order_fields": [
+            {
+              "field": "${orderBy}",
+              "order_type": "${orderDir}"
+            }
+          ],
+          "conditions": [
+            {
+              "disable": "${!username}",
+              "op": "and",
+              "field": "username",
+              "condition_type": "like",
+              "vals": ["%${username}%"]
+            },
+            {
+              "disable": "${!email}",
+              "op": "and",
+              "field": "email",
+              "condition_type": "like",
+              "vals": ["%${email}%"]
+            },
+            {
+              "disable": "${!phone}",
+              "op": "and",
+              "field": "phone",
+              "condition_type": "like",
+              "vals": ["%${phone}%"]
+            }
+          ],
+          "page": {
+            "offset": "${(page - 1) * perPage}",
+            "limit": 20,
+            "query_count": true
+          }
+        }
+      },
+      "filter": {
+        "title": "搜索",
+        "body": [
+          {
+            "type": "group",
+            "body": [
+              {
+                "type": "input-text",
+                "name": "username",
+                "label": "用户名",
+                "clearable": true,
+                "placeholder": "用户名搜索",
+                "size": "sm"
+              },
+              {
+                "type": "input-text",
+                "name": "email",
+                "label": "邮箱",
+                "clearable": true,
+                "placeholder": "邮箱搜索",
+                "size": "sm"
+              },
+              {
+                "type": "input-text",
+                "name": "phone",
+                "label": "手机号",
+                "clearable": true,
+                "placeholder": "邮箱搜索",
+                "size": "sm"
+              }
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "type": "button",
+            "actionType": "dialog",
+            "icon": "fa fa-plus",
+            "label": "新增",
+            "dialog": {
+              "title": "新增用户",
+              "body": {
+                "type": "form",
+                "name": "sample-edit-form",
+                "api": {
+                  "method": "post",
+                  "url": "${API_BASEURL}/admin/common/insert",
+                  "data": {
+                    "table_name": "sys_user",
+                    "row": {
+                      "username": "${username}",
+                      "pwd": "${pwd}",
+                      "nickname": "${nickname}",
+                      "email": "${email}",
+                      "phone": "${phone}",
+                      "remark": "${remark}"
+                    }
+                  }
+                },
+                "body": [
+                  {
+                    "type": "input-text",
+                    "name": "username",
+                    "label": "用户名",
+                    "required": true
+                  },
+                  {
+                    "type": "input-text",
+                    "name": "pwd",
+                    "label": "密码",
+                    "required": true
+                  },
+                  {
+                    "type": "input-text",
+                    "name": "nickname",
+                    "label": "昵称",
+                    "required": true
+                  },
+                  {
+                    "type": "input-text",
+                    "name": "email",
+                    "label": "邮箱"
+                  },
+                  {
+                    "type": "input-text",
+                    "name": "phone",
+                    "label": "手机号"
+                  },
+                  {
+                    "type": "textarea",
+                    "name": "remark",
+                    "label": "备注"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "reset",
+            "label": "重置"
+          },
+          {
+            "type": "submit",
+            "level": "primary",
+            "label": "查询"
+          }
+        ]
+      },
+      "bulkActions": [
+        {
+          "label": "批量删除",
+          "type": "button",
+          "level": "danger",
+          "actionType": "ajax",
+          "api": "delete:${API_HOST}/api/amis-mock/sample/$ids",
+          "confirmText": "确定要批量删除?"
+        }
+      ],
+      "columns": [
+        {
+          "name": "id",
+          "label": "ID",
+          "sortable": true
+        },
+        {
+          "name": "username",
+          "label": "用户名"
+        },
+        {
+          "name": "email",
+          "label": "邮箱"
+        },
+        {
+          "name": "nickname",
+          "label": "昵称"
+        },
+        {
+          "name": "status",
+          "label": "状态"
+        },
+        {
+          "name": "ctime",
+          "label": "创建时间",
+          "sortable": true,
+          "tpl": "${ctime | date:YYYY-MM-DD hh\\:mm\\:ss:x}"
+        },
+        {
+          "type": "operation",
+          "label": "操作",
+          "width": 100,
+          "buttons": [
+            {
+              "type": "button",
+              "icon": "fa fa-eye",
+              "actionType": "dialog",
+              "tooltip": "查看",
+              "dialog": {
+                "title": "用户信息",
+                "body": {
+                  "type": "form",
+                  "body": [
+                    {
+                      "type": "static",
+                      "name": "id",
+                      "label": "ID"
+                    },
+                    {
+                      "type": "static",
+                      "name": "username",
+                      "label": "用户名"
+                    },
+                    {
+                      "type": "static",
+                      "name": "email",
+                      "label": "邮箱"
+                    },
+                    {
+                      "type": "static",
+                      "name": "nickname",
+                      "label": "昵称"
+                    },
+                    {
+                      "type": "static",
+                      "name": "status",
+                      "label": "状态"
+                    },
+                    {
+                      "type": "static",
+                      "name": "ctime",
+                      "label": "创建时间",
+                      "sortable": true,
+                      "tpl": "${ctime | date:YYYY-MM-DD hh\\:mm\\:ss:x}"
+                    },
+                    {
+                      "type": "static",
+                      "name": "remark",
+                      "label": "备注"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "type": "button",
+              "icon": "fa fa-pencil",
+              "tooltip": "编辑",
+              "actionType": "drawer",
+              "drawer": {
+                "position": "left",
+                "size": "lg",
+                "title": "编辑",
+                "body": {
+                  "type": "form",
+                  "name": "sample-edit-form",
+                  "data": {
+                    "env": "test"
+                  },
+                  "api": {
+                    "method": "post",
+                    "url": "https://3xsw4ap8wah59.cfc-execute.bj.baidubce.com/api/amis-mock/sample/$id",
+                    "messages": {
+                      "success": "成功了-${env}"
+                    }
+                  },
+                  "body": [
+                    {
+                      "type": "input-text",
+                      "name": "engine",
+                      "label": "Engine",
+                      "required": true
+                    },
+                    {
+                      "type": "divider"
+                    },
+                    {
+                      "type": "input-text",
+                      "name": "browser",
+                      "label": "Browser",
+                      "required": true
+                    },
+                    {
+                      "type": "divider"
+                    },
+                    {
+                      "type": "input-text",
+                      "name": "platform",
+                      "label": "Platform(s)",
+                      "required": true
+                    },
+                    {
+                      "type": "divider"
+                    },
+                    {
+                      "type": "input-text",
+                      "name": "version",
+                      "label": "Engine version"
+                    },
+                    {
+                      "type": "divider"
+                    },
+                    {
+                      "type": "select",
+                      "name": "grade",
+                      "label": "CSS grade",
+                      "options": ["A", "B", "C", "D", "X"]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "type": "button",
+              "icon": "fa fa-times text-danger",
+              "actionType": "ajax",
+              "tooltip": "删除",
+              "confirmText": "您确认要删除[${username}]?",
+              "api":{
+                "method": "post",
+                "url": "${API_BASEURL}/admin/common/delete",
+                "data": {
+                  "table_name": "sys_user",
+                  "conditions": [
+                    {
+                      "op": "and",
+                      "field": "id",
+                      "condition_type": "eq",
+                      "vals": ["${id}"]
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "toggled": true
+        }
+      ],
+      "affixHeader": true,
+      "columnsTogglable": "auto",
+      "placeholder": "暂无数据",
+      "combineNum": 0,
+      "bodyClassName": "panel-default"
+    }
+  ]
+}

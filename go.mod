@@ -3,10 +3,9 @@ module github.com/fengjx/glca
 go 1.22
 
 require (
-	github.com/fengjx/daox v1.0.1-rc01.0.20240302044337-54c1f04c3a3e
+	github.com/fengjx/daox v1.0.1-rc02
 	github.com/fengjx/go-halo v0.0.2
-	github.com/fengjx/luchen v1.0.1-rc03
-	github.com/go-chi/chi/v5 v5.0.11
+	github.com/fengjx/luchen v1.0.1-rc04
 	github.com/go-kit/kit v0.13.0
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/golang-jwt/jwt/v5 v5.2.0
