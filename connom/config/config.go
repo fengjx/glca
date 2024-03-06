@@ -1,8 +1,8 @@
 package config
 
 import (
+	"flag"
 	"os"
-	"strings"
 
 	"github.com/fengjx/go-halo/fs"
 	"github.com/fengjx/luchen"
@@ -11,24 +11,30 @@ import (
 var appConfig AppConfig
 
 func init() {
+	configPath := flag.String("c", "", "custom config file path")
+	flag.Parse()
+
 	appConfigFile, err := fs.Lookup("conf/app.yml", 5)
 	if err != nil {
 		luchen.RootLogger().Panic("config file not found")
 	}
 	configs := []string{appConfigFile}
 	var configFile string
-	envConfigPath := os.Getenv("APP_CONFIG")
-	if envConfigPath != "" {
-		configFile = envConfigPath
+	if configPath != nil {
+		configFile = *configPath
 	}
-	if configFile == "" && len(os.Args) > 1 {
-		configFile = os.Args[1]
+	if configFile == "" {
+		envConfig := os.Getenv("APP_CONFIG")
+		if envConfig != "" {
+			configFile = envConfig
+		}
 	}
-	if strings.HasSuffix(configFile, "yml") || strings.HasSuffix(configFile, "yaml") {
+	if configFile != "" {
 		configFile, err = fs.Lookup(configFile, 5)
 		if err != nil {
 			panic(err)
 		}
+		luchen.RootLogger().Infof("load custom config file: %s", configFile)
 		configs = append(configs, configFile)
 	}
 	appConfig = luchen.MustLoadConfig[AppConfig](configs...)

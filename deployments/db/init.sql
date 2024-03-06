@@ -1,4 +1,3 @@
-
 create table sys_user
 (
     `id`       bigint auto_increment primary key,
@@ -13,7 +12,41 @@ create table sys_user
     `utime`    timestamp    not null default current_timestamp on update current_timestamp comment '更新时间',
     `ctime`    timestamp    not null default current_timestamp comment '创建时间',
     unique uk_u (`username`),
-    index idx_u_s(`username`, `status`)
+    index idx_u_s (`username`, `status`)
 )
     engine = innodb
     default charset = utf8mb4 comment '用户信息表';
+
+create table sys_config
+(
+    `id`     bigint auto_increment primary key,
+    `group`  varchar(32)           default '' not null comment '分组',
+    `key`    varchar(64)  not null comment '配置键',
+    `value`  text         not null comment '配置值',
+    `status` varchar(16)  not null comment 'normal disable del',
+    `remark` varchar(512) not null comment '备注',
+    `utime`  timestamp    not null default current_timestamp on update current_timestamp comment '更新时间',
+    `ctime`  timestamp    not null default current_timestamp comment '创建时间',
+    unique uk_k (`key`)
+)
+    engine = innodb
+    default charset = utf8mb4 comment '系统配置';
+
+create table sys_dict
+(
+    `id`         bigint auto_increment primary key,
+    `group`      varchar(32)  not null comment '分组',
+    `group_name` varchar(32)  not null comment '分组名称',
+    `value`      varchar(64)  not null comment '配置键',
+    `label`      varchar(128) not null comment '配置值',
+    `status`     varchar(16)  not null comment 'normal disable del',
+    `remark`     varchar(512) not null default '' comment '备注',
+    `utime`      timestamp    not null default current_timestamp on update current_timestamp comment '更新时间',
+    `ctime`      timestamp    not null default current_timestamp comment '创建时间',
+    unique uk_g_v (`group`, `value`)
+)
+    engine = innodb
+    default charset = utf8mb4 comment '系统字典表';
+
+
+
