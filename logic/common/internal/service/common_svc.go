@@ -9,9 +9,9 @@ import (
 	"github.com/fengjx/luchen"
 	"go.uber.org/zap"
 
-	"github.com/fengjx/glca/connom/data/vo"
 	"github.com/fengjx/glca/integration/db"
 	"github.com/fengjx/glca/logic/common/commdto"
+	"github.com/fengjx/glca/protocol"
 )
 
 var CommonService *commonService
@@ -49,7 +49,7 @@ func (svc *commonService) RegisterTableConfig(config commdto.TableConfig) {
 	svc.Unlock()
 }
 
-func (svc *commonService) Query(ctx context.Context, query daox.QueryRecord) (*vo.PageVO[map[string]any], error) {
+func (svc *commonService) Query(ctx context.Context, query daox.QueryRecord) (*protocol.PageVO[map[string]any], error) {
 	log := luchen.Logger(ctx)
 	defaultDB := db.GetDefaultDB()
 	config := svc.tableConfigMap[query.TableName]
@@ -61,7 +61,7 @@ func (svc *commonService) Query(ctx context.Context, query daox.QueryRecord) (*v
 		log.Error("common query err", zap.Any("query", json.ToJsonDelay(query)), zap.Error(err))
 		return nil, err
 	}
-	pageVO := &vo.PageVO[map[string]any]{
+	pageVO := &protocol.PageVO[map[string]any]{
 		List:    list,
 		Offset:  page.Offset,
 		Limit:   page.Limit,

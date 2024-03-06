@@ -4,7 +4,7 @@ import (
 	"github.com/fengjx/luchen"
 	httptransport "github.com/go-kit/kit/transport/http"
 
-	"github.com/fengjx/glca/pb"
+	"github.com/fengjx/glca/protocol"
 	"github.com/fengjx/glca/transport/http"
 )
 
@@ -25,7 +25,7 @@ func (h *loginHandler) login() *httptransport.Server {
 	}
 	return luchen.NewHTTPHandler(
 		MakeLoginEndpoint(),
-		luchen.DecodeHTTPJSONRequest[pb.LoginReq],
+		luchen.DecodeHTTPJSONRequest[protocol.LoginReq],
 		luchen.EncodeHTTPJSONResponse(http.ResponseWrapper),
 		options...,
 	)

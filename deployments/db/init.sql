@@ -19,14 +19,15 @@ create table sys_user
 
 create table sys_config
 (
-    `id`     bigint auto_increment primary key,
-    `group`  varchar(32)           default '' not null comment '分组',
-    `key`    varchar(64)  not null comment '配置键',
-    `value`  text         not null comment '配置值',
-    `status` varchar(16)  not null comment 'normal disable del',
-    `remark` varchar(512) not null comment '备注',
-    `utime`  timestamp    not null default current_timestamp on update current_timestamp comment '更新时间',
-    `ctime`  timestamp    not null default current_timestamp comment '创建时间',
+    `id`         bigint auto_increment primary key,
+    `group`      varchar(32)           default '' not null comment '分组',
+    `group_name` varchar(32)           default '' not null comment '分组名称',
+    `key`        varchar(64)  not null comment '配置键',
+    `value`      text         not null comment '配置值',
+    `status`     varchar(16)  not null comment 'normal disable del',
+    `remark`     varchar(512) not null comment '备注',
+    `utime`      timestamp    not null default current_timestamp on update current_timestamp comment '更新时间',
+    `ctime`      timestamp    not null default current_timestamp comment '创建时间',
     unique uk_k (`key`)
 )
     engine = innodb
@@ -37,8 +38,8 @@ create table sys_dict
     `id`         bigint auto_increment primary key,
     `group`      varchar(32)  not null comment '分组',
     `group_name` varchar(32)  not null comment '分组名称',
-    `value`      varchar(64)  not null comment '配置键',
-    `label`      varchar(128) not null comment '配置值',
+    `value`      varchar(64)  not null comment '数据值',
+    `label`      varchar(128) not null comment '显示标签',
     `status`     varchar(16)  not null comment 'normal disable del',
     `remark`     varchar(512) not null default '' comment '备注',
     `utime`      timestamp    not null default current_timestamp on update current_timestamp comment '更新时间',

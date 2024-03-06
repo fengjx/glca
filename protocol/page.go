@@ -1,4 +1,4 @@
-package vo
+package protocol
 
 type PageVO[T any] struct {
 	List    []T   `json:"list"`

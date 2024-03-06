@@ -14,12 +14,12 @@ import (
 	"github.com/fengjx/glca/logic/sys/internal/data/entity"
 	"github.com/fengjx/glca/logic/sys/internal/data/types"
 	"github.com/fengjx/glca/logic/sys/internal/service"
-	"github.com/fengjx/glca/pb"
+	"github.com/fengjx/glca/protocol"
 )
 
 func MakeLoginEndpoint() endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
-		req := request.(*pb.LoginReq)
+		req := request.(*protocol.LoginReq)
 		log := luchen.Logger(ctx).With(zap.String("username", req.Username))
 		user, err := service.SysUserService.GetByUsername(ctx, req.Username)
 		if err != nil {
@@ -43,9 +43,10 @@ func MakeLoginEndpoint() endpoint.Endpoint {
 			log.Error("gen token err", zap.Error(err))
 			return nil, err
 		}
-		resp := &pb.LoginResp{}
-		resp.UserInfo = types.BuildUserInfoPBFromEntity(user)
-		resp.Token = token
+		resp := &protocol.LoginResp{
+			Token:    token,
+			UserInfo: types.BuildUserInfoPBFromEntity(user),
+		}
 		return resp, nil
 	}
 }
