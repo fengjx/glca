@@ -1,5 +1,5 @@
 # Binary file names.
-BINARY_NAME=luchen-admin
+BINARY_NAME=glca
 
 # Build parameters.
 DIST_PATH=.dist
@@ -19,7 +19,8 @@ build: build-go
 build-go:
 	rm -rf ${DIST_PATH}
 	GO111MODULE=on CGO_ENABLED=0 GOOS=linux go build -trimpath -tags=jsoniter -mod=readonly -v -o $(DIST_PATH)/${BINARY_NAME} main.go
-	cp -rf configs $(DIST_PATH)
+	cp -rf conf $(DIST_PATH)
+	cp -rf static $(DIST_PATH)
 
 
 .PHONY: gen
