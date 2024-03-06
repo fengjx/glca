@@ -35,10 +35,17 @@ func GetServer() *luchen.HTTPServer {
 					http.MethodPatch,
 					http.MethodDelete,
 				},
-				AllowedHeaders:   []string{"*"},
+				AllowedHeaders: []string{"*"},
+				ExposedHeaders: []string{
+					"Content-Disposition",
+					"Content-Type",
+					ResponseHeaderServer,
+					ResponseHeaderRefreshToken,
+				},
 				AllowCredentials: true,
 			}),
-			adminAuthMiddleware,
+			authMiddleware,
+			adminMiddleware,
 		).Static("/static/", "static")
 	})
 	return server

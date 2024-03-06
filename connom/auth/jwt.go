@@ -59,7 +59,8 @@ func GenToken(payload LoginPayload) (string, error) {
 	return tk, nil
 }
 
-func Parse(token string) (payload LoginPayload, err error) {
+// Parse 解析 token
+func Parse(token string) (payload LoginPayload, expiresAt int64, err error) {
 	_, jwtToken, err := decode(token)
 	if err != nil {
 		return
@@ -70,8 +71,13 @@ func Parse(token string) (payload LoginPayload, err error) {
 		}
 		return secret, nil
 	})
+	if err != nil {
+		return
+	}
 	if claims, ok := tk.Claims.(*TokenClaims); ok && tk.Valid {
-		return claims.LoginPayload, nil
+		expiresAt = claims.ExpiresAt.Unix()
+		payload = claims.LoginPayload
+		return
 	}
 	return
 }

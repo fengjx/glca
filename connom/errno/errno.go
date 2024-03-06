@@ -5,8 +5,10 @@ import "github.com/fengjx/luchen"
 // common
 
 var (
-	SystemErr = &luchen.Errno{HTTPCode: 500, Code: 500, Msg: "系统错误"}
-	ArgsErr   = &luchen.Errno{HTTPCode: 400, Code: 400, Msg: "参数错误"}
+	SystemErr       = &luchen.Errno{HTTPCode: 500, Code: 500, Msg: "系统错误"}
+	ArgsErr         = &luchen.Errno{HTTPCode: 400, Code: 400, Msg: "参数错误"}
+	UnauthorizedErr = &luchen.Errno{HTTPCode: 401, Code: 401, Msg: "Unauthorized"}
+	ForbiddenErr    = &luchen.Errno{HTTPCode: 403, Code: 403, Msg: "Forbidden"}
 )
 
 // user

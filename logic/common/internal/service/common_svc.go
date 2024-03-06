@@ -68,7 +68,6 @@ func (svc *commonService) Query(ctx context.Context, query daox.QueryRecord) (*p
 		Count:   page.Count,
 		HasNext: page.HasNext,
 	}
-	log.Info("page vo", zap.Any("page", pageVO))
 	return pageVO, nil
 }
 
