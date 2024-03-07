@@ -54,7 +54,7 @@ func (svc *commonService) Query(ctx context.Context, query daox.QueryRecord) (*p
 	defaultDB := db.GetDefaultDB()
 	config := svc.tableConfigMap[query.TableName]
 	if len(query.Fields) == 0 {
-		query.Fields = config.Columns
+		query.Fields = config.QueryColumns
 	}
 	list, page, err := daox.FindListMap(ctx, defaultDB, query)
 	if err != nil {
@@ -76,7 +76,7 @@ func (svc *commonService) Get(ctx context.Context, record daox.GetRecord) (map[s
 	defaultDB := db.GetDefaultDB()
 	config := svc.tableConfigMap[record.TableName]
 	if len(record.Fields) == 0 {
-		record.Fields = config.Columns
+		record.Fields = config.QueryColumns
 	}
 	data, err := daox.GetMap(ctx, defaultDB, record)
 	if err != nil {
@@ -127,7 +127,34 @@ func (svc *commonService) Insert(ctx context.Context, record daox.InsertRecord) 
 func (svc *commonService) Update(ctx context.Context, record daox.UpdateRecord) (int64, error) {
 	log := luchen.Logger(ctx)
 	defaultDB := db.GetDefaultDB()
-	affected, err := daox.Update(ctx, defaultDB, record)
+
+	tableName := record.TableName
+	fieldsFilter := func() daox.FieldsFilter {
+		return func(ctx context.Context) []string {
+			disableFields := []string{"id", "ctime", "utime"}
+			if cfg, ok := svc.tableConfigMap[tableName]; ok && cfg.UpdateFieldsFilter != nil {
+				disableFields = append(disableFields, cfg.UpdateFieldsFilter(ctx)...)
+			}
+			return disableFields
+		}
+	}
+
+	dataWrapper := func() daox.DataWrapper[map[string]any, map[string]any] {
+		return func(ctx context.Context, src map[string]any) map[string]any {
+			if cfg, ok := svc.tableConfigMap[tableName]; ok && cfg.UpdateDataWrapper != nil {
+				return cfg.UpdateDataWrapper(ctx, src)
+			}
+			return src
+		}
+	}
+
+	affected, err := daox.Update(
+		ctx,
+		defaultDB,
+		record,
+		daox.WithUpdateFieldsFilter(fieldsFilter()),
+		daox.WithUpdateDataWrapper(dataWrapper()),
+	)
 	if err != nil {
 		log.Error("common update err", zap.Any("record", json.ToJsonDelay(record)), zap.Error(err))
 		return 0, err

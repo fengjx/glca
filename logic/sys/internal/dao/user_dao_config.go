@@ -15,13 +15,14 @@ import (
 
 func init() {
 	m := meta.SysUserMeta
-	insertFieldsFilter := func(ctx context.Context) []string {
+	fieldsFilter := func(ctx context.Context) []string {
 		return []string{"login_time"}
 	}
 	insertDataWrapper := func(ctx context.Context, src map[string]any) map[string]any {
 		pwd := utils.ToString(src[m.Pwd])
-		if pwd == "" {
+		if len(pwd) == 0 {
 			delete(src, m.Pwd)
+			delete(src, m.Salt)
 			return src
 		}
 		salt := utils.RandomString(6)
@@ -36,11 +37,27 @@ func init() {
 	columns := lo.Filter[string](meta.SysUserColumns, func(item string, i int) bool {
 		return !lo.Contains[string]([]string{"pwd", "salt"}, item)
 	})
+
+	updateDataWrapper := func(ctx context.Context, src map[string]any) map[string]any {
+		pwd := utils.ToString(src[m.Pwd])
+		if len(pwd) > 0 {
+			salt := utils.RandomString(6)
+			sb := strings.Builder{}
+			sb.WriteString(pwd)
+			sb.WriteString(salt)
+			md5Pwd := kit.MD5Hash(sb.String())
+			src[m.Pwd] = md5Pwd
+			src[m.Salt] = salt
+		}
+		return src
+	}
 	cfg := commdto.TableConfig{
 		TableName:          meta.SysUserTableName,
-		Columns:            columns,
-		InsertFieldsFilter: insertFieldsFilter,
+		QueryColumns:       columns,
+		InsertFieldsFilter: fieldsFilter,
 		InsertDataWrapper:  insertDataWrapper,
+		UpdateFieldsFilter: fieldsFilter,
+		UpdateDataWrapper:  updateDataWrapper,
 	}
 	commpub.RegisterTableConfig(cfg)
 }

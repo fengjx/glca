@@ -1,7 +1,0 @@
-
-POST {{BaseURL}}/hello/say-hello
-Content-Type: application/x-www-form-urlencoded
-X-Debug-UID: 1024
-
-name = fengjx
-

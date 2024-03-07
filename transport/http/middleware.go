@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/fengjx/luchen"
+	"github.com/fengjx/luchen/http/middleware"
 	"go.uber.org/zap"
 
 	"github.com/fengjx/glca/connom/auth"
@@ -92,3 +93,5 @@ func isNoAuthPath(r *http.Request) bool {
 	}
 	return false
 }
+
+var GzipMiddleware = middleware.Compress(5, "gzip")

@@ -3,7 +3,7 @@ module github.com/fengjx/glca
 go 1.22
 
 require (
-	github.com/fengjx/daox v1.0.1-rc02
+	github.com/fengjx/daox v1.0.1-rc04
 	github.com/fengjx/go-halo v0.0.2
 	github.com/fengjx/luchen v1.0.1-rc04
 	github.com/go-kit/kit v0.13.0

@@ -11,9 +11,8 @@ import (
 	"github.com/fengjx/glca/connom/auth"
 	"github.com/fengjx/glca/connom/errno"
 	"github.com/fengjx/glca/connom/kit"
-	"github.com/fengjx/glca/logic/sys/internal/data/entity"
-	"github.com/fengjx/glca/logic/sys/internal/data/types"
-	"github.com/fengjx/glca/logic/sys/internal/service"
+	"github.com/fengjx/glca/logic/login/internal/service"
+	"github.com/fengjx/glca/logic/sys/syspub"
 	"github.com/fengjx/glca/protocol"
 )
 
@@ -21,7 +20,7 @@ func MakeLoginEndpoint() endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(*protocol.LoginReq)
 		log := luchen.Logger(ctx).With(zap.String("username", req.Username))
-		user, err := service.SysUserService.GetByUsername(ctx, req.Username)
+		user, err := service.UserSvc.GetByUsername(ctx, req.Username)
 		if err != nil {
 			log.Error("user login err",
 				zap.String("username", req.Username),
@@ -45,14 +44,14 @@ func MakeLoginEndpoint() endpoint.Endpoint {
 		}
 		resp := &protocol.LoginResp{
 			Token:    token,
-			UserInfo: types.BuildUserInfoPBFromEntity(user),
+			UserInfo: user.ToUserInfoPB(),
 		}
 		return resp, nil
 	}
 }
 
 // checkPassword 检查密码是否匹配
-func checkPassword(user *entity.SysUser, password string) bool {
+func checkPassword(user *syspub.UserDetailInfoDTO, password string) bool {
 	sb := strings.Builder{}
 	sb.WriteString(password)
 	sb.WriteString(user.Salt)

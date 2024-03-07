@@ -4,7 +4,7 @@ import "github.com/fengjx/daox"
 
 type TableConfig struct {
 	TableName          string
-	Columns            []string
+	QueryColumns       []string
 	InsertFieldsFilter daox.FieldsFilter
 	InsertDataWrapper  daox.DataWrapper[map[string]any, map[string]any]
 	SelectFieldsFilter daox.FieldsFilter

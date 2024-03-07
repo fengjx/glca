@@ -1,5 +1,7 @@
 package protocol
 
+import "github.com/fengjx/glca/connom/kit"
+
 type PageVO[T any] struct {
 	List    []T   `json:"list"`
 	Offset  int64 `json:"offset"`
@@ -13,7 +15,7 @@ func (v *PageVO[T]) ToAmisVO() *AmisPageVO[T] {
 		return nil
 	}
 	return &AmisPageVO[T]{
-		Items: v.List,
+		Items: kit.OrElse[[]T](len(v.List) > 0, v.List, make([]T, 0)),
 		Total: v.Count,
 	}
 }

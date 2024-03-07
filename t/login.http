@@ -1,6 +1,6 @@
 
 ### 用户登录
-POST {{BaseURL}}/api/user/login
+POST {{BaseURL}}/api/login
 Content-Type: application/json
 
 {
