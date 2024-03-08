@@ -10,7 +10,7 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/fengjx/glca/integration/db"
-	"github.com/fengjx/glca/logic/common/commdto"
+	"github.com/fengjx/glca/logic/common/commpub"
 	"github.com/fengjx/glca/protocol"
 )
 
@@ -22,7 +22,7 @@ func init() {
 
 type commonService struct {
 	sync.Mutex
-	tableConfigMap map[string]commdto.TableConfig
+	tableConfigMap map[string]commpub.TableConfig
 }
 
 type TableConfig struct {
@@ -38,11 +38,11 @@ type TableConfig struct {
 
 func newCommonService() *commonService {
 	inst := &commonService{}
-	inst.tableConfigMap = make(map[string]commdto.TableConfig)
+	inst.tableConfigMap = make(map[string]commpub.TableConfig)
 	return inst
 }
 
-func (svc *commonService) RegisterTableConfig(config commdto.TableConfig) {
+func (svc *commonService) RegisterTableConfig(config commpub.TableConfig) {
 	svc.Lock()
 	CommonService.tableConfigMap[config.TableName] = config
 	luchen.RootLogger().Infof("register table config [%s]", config.TableName)
@@ -54,7 +54,10 @@ func (svc *commonService) Query(ctx context.Context, query daox.QueryRecord) (*p
 	defaultDB := db.GetDefaultDB()
 	config := svc.tableConfigMap[query.TableName]
 	if len(query.Fields) == 0 {
-		query.Fields = config.QueryColumns
+		query.Fields = config.SelectColumns
+	}
+	if config.SelectConditionWrapper != nil {
+		query.Conditions = config.SelectConditionWrapper(query.Conditions)
 	}
 	list, page, err := daox.FindListMap(ctx, defaultDB, query)
 	if err != nil {
@@ -76,7 +79,10 @@ func (svc *commonService) Get(ctx context.Context, record daox.GetRecord) (map[s
 	defaultDB := db.GetDefaultDB()
 	config := svc.tableConfigMap[record.TableName]
 	if len(record.Fields) == 0 {
-		record.Fields = config.QueryColumns
+		record.Fields = config.SelectColumns
+	}
+	if config.SelectConditionWrapper != nil {
+		record.Conditions = config.SelectConditionWrapper(record.Conditions)
 	}
 	data, err := daox.GetMap(ctx, defaultDB, record)
 	if err != nil {
@@ -128,12 +134,12 @@ func (svc *commonService) Update(ctx context.Context, record daox.UpdateRecord) 
 	log := luchen.Logger(ctx)
 	defaultDB := db.GetDefaultDB()
 
-	tableName := record.TableName
+	config := svc.tableConfigMap[record.TableName]
 	fieldsFilter := func() daox.FieldsFilter {
 		return func(ctx context.Context) []string {
 			disableFields := []string{"id", "ctime", "utime"}
-			if cfg, ok := svc.tableConfigMap[tableName]; ok && cfg.UpdateFieldsFilter != nil {
-				disableFields = append(disableFields, cfg.UpdateFieldsFilter(ctx)...)
+			if config.UpdateFieldsFilter != nil {
+				disableFields = append(disableFields, config.UpdateFieldsFilter(ctx)...)
 			}
 			return disableFields
 		}
@@ -141,11 +147,15 @@ func (svc *commonService) Update(ctx context.Context, record daox.UpdateRecord) 
 
 	dataWrapper := func() daox.DataWrapper[map[string]any, map[string]any] {
 		return func(ctx context.Context, src map[string]any) map[string]any {
-			if cfg, ok := svc.tableConfigMap[tableName]; ok && cfg.UpdateDataWrapper != nil {
-				return cfg.UpdateDataWrapper(ctx, src)
+			if config.UpdateDataWrapper != nil {
+				return config.UpdateDataWrapper(ctx, src)
 			}
 			return src
 		}
+	}
+
+	if config.UpdateConditionWrapper != nil {
+		record.Conditions = config.UpdateConditionWrapper(record.Conditions)
 	}
 
 	affected, err := daox.Update(

@@ -8,6 +8,7 @@ import (
 
 	"github.com/fengjx/luchen"
 
+	"github.com/fengjx/glca/connom/lifecycle"
 	"github.com/fengjx/glca/logic"
 	"github.com/fengjx/glca/transport/http"
 )
@@ -19,6 +20,7 @@ func main() {
 
 	httpServer := http.GetServer()
 	logic.Init(ctx, httpServer)
+	lifecycle.DoHooks()
 	luchen.Start(httpServer)
 
 	quit := make(chan os.Signal)

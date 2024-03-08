@@ -16,8 +16,12 @@ github.com/fengjx/daox v1.0.1-rc04 h1:WKHBMI7B/K+wMnZZRwbuc0z1oh88/2Vq6CUUjxa9Z3
 github.com/fengjx/daox v1.0.1-rc04/go.mod h1:HF4pCdey8S52BWeqHhHLIWl5Jzsd8ovE2cTVTEJLjQA=
 github.com/fengjx/go-halo v0.0.2 h1:/BRWM0EE/+x0g6Rc5KeAYg8xZRlOaRYakXTXmM6sliA=
 github.com/fengjx/go-halo v0.0.2/go.mod h1:2+XqPtPM+OshHRoDfVH681Sh9zFJ95lOd5QRNMRaISs=
+github.com/fengjx/go-halo v0.0.3-rc01 h1:HbTgqh2cdgPlBzi0dkmcUJaxqE+DjavJR7thsJXM83c=
+github.com/fengjx/go-halo v0.0.3-rc01/go.mod h1:2+XqPtPM+OshHRoDfVH681Sh9zFJ95lOd5QRNMRaISs=
 github.com/fengjx/luchen v1.0.1-rc04 h1:p9x35GOlvwUnoyP7OeJ+ajSaI427L2mfLODXp//SoHo=
 github.com/fengjx/luchen v1.0.1-rc04/go.mod h1:9ByEwYMBYaIR4lnwd5suTuFa+v7Kn8Eh1EoQjdqNVxw=
+github.com/fengjx/luchen v1.0.1-rc05 h1:w0qAonlK67WHVGB5mvAff7H3YZX0UUTVXIBLRHKyLfE=
+github.com/fengjx/luchen v1.0.1-rc05/go.mod h1:zPoxiZUGigwI95Jc9Q4lcafkISFHyYxH3ysOchcfYn0=
 github.com/frankban/quicktest v1.14.6 h1:7Xjx+VpznH+oBnejlPUj8oUpdxnVs4f8XU8WnHkI4W8=
 github.com/frankban/quicktest v1.14.6/go.mod h1:4ptaffx2x8+WTWXmUCuVU6aPUX1/Mz7zb5vbUoiM6w0=
 github.com/fsnotify/fsnotify v1.7.0 h1:8JEhPFa5W2WU7YfeZzPNqzMP6Lwt7L2715Ggo0nosvA=

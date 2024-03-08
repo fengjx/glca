@@ -4,16 +4,16 @@ import (
 	"context"
 	"strings"
 
+	"github.com/fengjx/daox"
 	"github.com/fengjx/go-halo/utils"
 	"github.com/samber/lo"
 
 	"github.com/fengjx/glca/connom/kit"
-	"github.com/fengjx/glca/logic/common/commdto"
 	"github.com/fengjx/glca/logic/common/commpub"
 	"github.com/fengjx/glca/logic/sys/internal/data/meta"
 )
 
-func init() {
+func registerUserTableConfig() {
 	m := meta.SysUserMeta
 	fieldsFilter := func(ctx context.Context) []string {
 		return []string{"login_time"}
@@ -51,13 +51,26 @@ func init() {
 		}
 		return src
 	}
-	cfg := commdto.TableConfig{
-		TableName:          meta.SysUserTableName,
-		QueryColumns:       columns,
-		InsertFieldsFilter: fieldsFilter,
-		InsertDataWrapper:  insertDataWrapper,
-		UpdateFieldsFilter: fieldsFilter,
-		UpdateDataWrapper:  updateDataWrapper,
+
+	// 通用查询过滤删除记录
+	selectConditionWrapper := func(cond []daox.Condition) []daox.Condition {
+		cond = append(cond, daox.Condition{
+			Op:            daox.OpAnd,
+			Field:         m.Status,
+			ConditionType: daox.ConditionTypeNotEq,
+			Vals:          []any{"del"},
+		})
+		return cond
 	}
-	commpub.RegisterTableConfig(cfg)
+
+	cfg := commpub.TableConfig{
+		TableName:              meta.SysUserTableName,
+		SelectColumns:          columns,
+		SelectConditionWrapper: selectConditionWrapper,
+		InsertFieldsFilter:     fieldsFilter,
+		InsertDataWrapper:      insertDataWrapper,
+		UpdateFieldsFilter:     fieldsFilter,
+		UpdateDataWrapper:      updateDataWrapper,
+	}
+	commpub.CommonAPI.RegisterTableConfig(cfg)
 }

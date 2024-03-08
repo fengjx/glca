@@ -206,7 +206,16 @@
         },
         {
           "name": "status",
-          "label": "状态"
+          "label": "状态",
+          "quickEdit": {
+            "saveImmediately": true,
+            "mode": "inline",
+            "type": "select",
+            "options": [
+              "normal",
+              "disable"
+            ]
+          }
         },
         {
           "name": "ctime",
@@ -377,9 +386,12 @@
               "confirmText": "您确认要删除[${username}]?",
               "api":{
                 "method": "post",
-                "url": "${API_BASEURL}/admin/common/delete",
+                "url": "${API_BASEURL}/admin/common/update",
                 "data": {
                   "table_name": "sys_user",
+                  "row": {
+                    "status": "del"
+                  },
                   "conditions": [
                     {
                       "op": "and",
