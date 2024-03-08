@@ -5,9 +5,11 @@ import (
 	"github.com/fengjx/glca/logic/common/internal/service"
 )
 
-type CommonProvider struct {
+var CommonProvider = &commonProvider{}
+
+type commonProvider struct {
 }
 
-func (p *CommonProvider) RegisterTableConfig(config commpub.TableConfig) {
+func (p *commonProvider) RegisterTableConfig(config commpub.TableConfig) {
 	service.CommonService.RegisterTableConfig(config)
 }

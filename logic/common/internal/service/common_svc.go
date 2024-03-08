@@ -49,6 +49,11 @@ func (svc *commonService) RegisterTableConfig(config commpub.TableConfig) {
 	svc.Unlock()
 }
 
+func (svc *commonService) GetTableConfig(tableName string) (commpub.TableConfig, bool) {
+	config, ok := CommonService.tableConfigMap[tableName]
+	return config, ok
+}
+
 func (svc *commonService) Query(ctx context.Context, query daox.QueryRecord) (*protocol.PageVO[map[string]any], error) {
 	log := luchen.Logger(ctx)
 	defaultDB := db.GetDefaultDB()

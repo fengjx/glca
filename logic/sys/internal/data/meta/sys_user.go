@@ -12,8 +12,6 @@ import (
 
 
 
-const SysUserTableName = "sys_user"
-
 var SysUserColumns = []string{
     "id",
     "username",
@@ -43,6 +41,14 @@ type SysUserM struct {
     Remark string
     Utime string
     Ctime string
+}
+
+func (m SysUserM) TableName() string {
+    return "sys_user"
+}
+
+func (m SysUserM) PrimaryKey() string {
+    return "id"
 }
 
 var SysUserMeta = SysUserM{

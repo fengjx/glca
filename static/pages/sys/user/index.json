@@ -123,7 +123,8 @@
                       "nickname": "${nickname}",
                       "email": "${email}",
                       "phone": "${phone}",
-                      "remark": "${remark}"
+                      "remark": "${remark}",
+                      "status": "${status}"
                     }
                   }
                 },
@@ -160,6 +161,21 @@
                     "type": "textarea",
                     "name": "remark",
                     "label": "备注"
+                  },
+                  {
+                    "type": "select",
+                    "name": "status",
+                    "label": "状态",
+                    "options": [
+                      {
+                        "label": "正常",
+                        "value": "normal"
+                      },
+                      {
+                        "label": "封禁",
+                        "value": "disable"
+                      }
+                    ]
                   }
                 ]
               }
@@ -182,10 +198,25 @@
           "type": "button",
           "level": "danger",
           "actionType": "ajax",
-          "api": "delete:${API_HOST}/api/amis-mock/sample/$ids",
+          "api": {
+            "method": "post",
+            "url": "${API_BASEURL}/admin/common/delete-by-ids",
+            "data": {
+              "table_name": "sys_user",
+              "id_str": "${ids}"
+            }
+          },
           "confirmText": "确定要批量删除?"
         }
       ],
+      "quickSaveApi": {
+        "method": "post",
+        "url": "${API_BASEURL}/admin/common/batch-update",
+        "data": {
+          "table_name": "sys_user",
+          "rows": "${rowsDiff}"
+        }
+      },
       "columns": [
         {
           "name": "id",
@@ -205,10 +236,16 @@
           "label": "昵称"
         },
         {
+          "name": "ctime",
+          "label": "创建时间",
+          "sortable": true,
+          "tpl": "${ctime | date:YYYY-MM-DD hh\\:mm\\:ss:x}"
+        },
+        {
           "name": "status",
           "label": "状态",
+          "width": 150,
           "quickEdit": {
-            "saveImmediately": true,
             "mode": "inline",
             "type": "select",
             "options": [
@@ -216,12 +253,6 @@
               "disable"
             ]
           }
-        },
-        {
-          "name": "ctime",
-          "label": "创建时间",
-          "sortable": true,
-          "tpl": "${ctime | date:YYYY-MM-DD hh\\:mm\\:ss:x}"
         },
         {
           "type": "operation",
@@ -300,7 +331,8 @@
                         "nickname": "${nickname}",
                         "email": "${email}",
                         "phone": "${phone}",
-                        "remark": "${remark}"
+                        "remark": "${remark}",
+                        "status": "${status}"
                       }
                     },
                     "messages": {
@@ -334,6 +366,21 @@
                       "type": "textarea",
                       "name": "remark",
                       "label": "备注"
+                    },
+                    {
+                      "type": "select",
+                      "name": "status",
+                      "label": "状态",
+                      "options": [
+                        {
+                          "label": "正常",
+                          "value": "normal"
+                        },
+                        {
+                          "label": "封禁",
+                          "value": "disable"
+                        }
+                      ]
                     }
                   ]
                 }
@@ -386,12 +433,9 @@
               "confirmText": "您确认要删除[${username}]?",
               "api":{
                 "method": "post",
-                "url": "${API_BASEURL}/admin/common/update",
+                "url": "${API_BASEURL}/admin/common/delete",
                 "data": {
                   "table_name": "sys_user",
-                  "row": {
-                    "status": "del"
-                  },
                   "conditions": [
                     {
                       "op": "and",

@@ -8,6 +8,7 @@ import (
 	"github.com/fengjx/go-halo/utils"
 	"github.com/samber/lo"
 
+	"github.com/fengjx/glca/connom/consts"
 	"github.com/fengjx/glca/connom/kit"
 	"github.com/fengjx/glca/logic/common/commpub"
 	"github.com/fengjx/glca/logic/sys/internal/data/meta"
@@ -19,6 +20,9 @@ func registerUserTableConfig() {
 		return []string{"login_time"}
 	}
 	insertDataWrapper := func(ctx context.Context, src map[string]any) map[string]any {
+		if _, ok := src[m.Status]; !ok {
+			src[m.Status] = consts.CommonStatusNormal
+		}
 		pwd := utils.ToString(src[m.Pwd])
 		if len(pwd) == 0 {
 			delete(src, m.Pwd)
@@ -64,7 +68,8 @@ func registerUserTableConfig() {
 	}
 
 	cfg := commpub.TableConfig{
-		TableName:              meta.SysUserTableName,
+		TableName:              m.TableName(),
+		PrimaryKey:             m.PrimaryKey(),
 		SelectColumns:          columns,
 		SelectConditionWrapper: selectConditionWrapper,
 		InsertFieldsFilter:     fieldsFilter,

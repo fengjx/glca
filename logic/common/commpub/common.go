@@ -7,6 +7,7 @@ import (
 
 type TableConfig struct {
 	TableName              string
+	PrimaryKey             string
 	SelectColumns          []string
 	SelectFieldsFilter     daox.FieldsFilter
 	SelectDataWrapper      daox.DataWrapper[any, any]

@@ -5,6 +5,7 @@ import (
 	"github.com/fengjx/luchen"
 	httptransport "github.com/go-kit/kit/transport/http"
 
+	"github.com/fengjx/glca/protocol"
 	"github.com/fengjx/glca/transport/http"
 )
 
@@ -21,7 +22,9 @@ func (h *adminCommonHandler) Bind(router *luchen.ServeMux) {
 	router.Handle(commonAPI+"/query", h.query())
 	router.Handle(commonAPI+"/get", h.get())
 	router.Handle(commonAPI+"/update", h.update())
+	router.Handle(commonAPI+"/batch-update", h.batchUpdate())
 	router.Handle(commonAPI+"/delete", h.delete())
+	router.Handle(commonAPI+"/delete-by-ids", h.deleteByIDs())
 }
 
 func (h *adminCommonHandler) query() *httptransport.Server {
@@ -72,6 +75,18 @@ func (h *adminCommonHandler) update() *httptransport.Server {
 	)
 }
 
+func (h *adminCommonHandler) batchUpdate() *httptransport.Server {
+	options := []httptransport.ServerOption{
+		httptransport.ServerErrorEncoder(http.ErrorEncoder),
+	}
+	return luchen.NewHTTPHandler(
+		MakeBatchUpdateEndpoint(),
+		luchen.DecodeHTTPJSONRequest[protocol.BatchUpdateReq],
+		luchen.EncodeHTTPJSONResponse(http.ResponseWrapper),
+		options...,
+	)
+}
+
 func (h *adminCommonHandler) delete() *httptransport.Server {
 	options := []httptransport.ServerOption{
 		httptransport.ServerErrorEncoder(http.ErrorEncoder),
@@ -79,6 +94,18 @@ func (h *adminCommonHandler) delete() *httptransport.Server {
 	return luchen.NewHTTPHandler(
 		MakeDeleteEndpoint(),
 		luchen.DecodeHTTPJSONRequest[daox.DeleteRecord],
+		luchen.EncodeHTTPJSONResponse(http.ResponseWrapper),
+		options...,
+	)
+}
+
+func (h *adminCommonHandler) deleteByIDs() *httptransport.Server {
+	options := []httptransport.ServerOption{
+		httptransport.ServerErrorEncoder(http.ErrorEncoder),
+	}
+	return luchen.NewHTTPHandler(
+		MakeDeleteByIDsEndpoint(),
+		luchen.DecodeHTTPJSONRequest[protocol.DeleteByIDsReq],
 		luchen.EncodeHTTPJSONResponse(http.ResponseWrapper),
 		options...,
 	)

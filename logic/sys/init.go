@@ -9,11 +9,12 @@ import (
 	"github.com/fengjx/glca/logic/sys/internal/dao"
 	"github.com/fengjx/glca/logic/sys/internal/endpoint"
 	"github.com/fengjx/glca/logic/sys/internal/provider"
+	"github.com/fengjx/glca/logic/sys/syspub"
 )
 
 func Init(ctx context.Context, httpServer *luchen.HTTPServer) {
 	lifecycle.AddHook(lifecycle.InterfaceAware, func() {
-		provider.Init()
+		syspub.SetUserAPI(provider.UserProvider)
 	})
 	lifecycle.AddHook(lifecycle.PostProcessor, func() {
 		dao.RegisterTableConfig()

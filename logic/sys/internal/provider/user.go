@@ -7,10 +7,12 @@ import (
 	"github.com/fengjx/glca/logic/sys/syspub"
 )
 
-type UserProvider struct {
+var UserProvider = &userProvider{}
+
+type userProvider struct {
 }
 
-func (impl *UserProvider) GetByUsername(ctx context.Context, username string) (*syspub.UserDetailInfoDTO, error) {
+func (impl *userProvider) GetByUsername(ctx context.Context, username string) (*syspub.UserDetailInfoDTO, error) {
 	sysUser, err := service.SysUserService.GetByUsername(ctx, username)
 	if err != nil {
 		return nil, err
