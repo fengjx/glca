@@ -17,6 +17,9 @@ func (impl *userProvider) GetByUsername(ctx context.Context, username string) (*
 	if err != nil {
 		return nil, err
 	}
+	if sysUser == nil {
+		return nil, nil
+	}
 	userDetailInfo := &syspub.UserDetailInfoDTO{
 		UserInfoDTO: syspub.UserInfoDTO{
 			ID:       sysUser.ID,

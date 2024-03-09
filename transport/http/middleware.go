@@ -60,6 +60,7 @@ func authMiddleware(next http.Handler) http.Handler {
 
 func adminMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		r.PathValue("")
 		if isNoAuthPath(r) {
 			next.ServeHTTP(w, r)
 			return

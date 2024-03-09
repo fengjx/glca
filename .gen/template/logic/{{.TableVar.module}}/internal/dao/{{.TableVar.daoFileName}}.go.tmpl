@@ -10,17 +10,17 @@ import (
     "github.com/fengjx/glca/logic/{{.TableVar.module}}/internal/data/entity"
 )
 
-type _{{$VarObjName}}Dao struct {
+type {{$VarObjName}}Dao struct {
 	*daox.Dao
 }
 
-func new{{$ObjName}}Dao() *_{{$VarObjName}}Dao {
-    {{$VarObjName}}Dao := &_{{$VarObjName}}Dao{}
-    {{$VarObjName}}Dao.Dao = daox.NewDAO(
+func new{{$ObjName}}Dao() *{{$VarObjName}}Dao {
+    inst := &{{$VarObjName}}Dao{}
+    inst.Dao = daox.NewDAO(
         db.GetDefaultDB(),
         "{{.Table.Name}}",
         "{{.Table.PrimaryKey.Name}}",
         reflect.TypeOf(&entity.{{$ObjName}}{}),
     )
-	return {{$VarObjName}}Dao
+	return inst
 }

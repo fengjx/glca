@@ -12,21 +12,6 @@ import (
 
 
 
-var SysUserColumns = []string{
-    "id",
-    "username",
-    "pwd",
-    "salt",
-    "email",
-    "nickname",
-    "avatar",
-    "phone",
-    "status",
-    "remark",
-    "utime",
-    "ctime",
-}
-
 // SysUserM 用户信息表
 type SysUserM struct {
     ID string
@@ -49,6 +34,23 @@ func (m SysUserM) TableName() string {
 
 func (m SysUserM) PrimaryKey() string {
     return "id"
+}
+
+func (m SysUserM) Columns() []string {
+	return []string{
+        "id",
+        "username",
+        "pwd",
+        "salt",
+        "email",
+        "nickname",
+        "avatar",
+        "phone",
+        "status",
+        "remark",
+        "utime",
+        "ctime",
+    }
 }
 
 var SysUserMeta = SysUserM{

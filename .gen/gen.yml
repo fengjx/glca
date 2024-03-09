@@ -7,5 +7,6 @@ target:
     out-dir: ./
     template-dir: .gen/template
   tables:
-    sys_user: {module: sys, daoFileName: user_dao, svcFileName: user_svc}
-
+    sys_user: {module: sys, simpleName: user, daoFileName: user_dao, svcFileName: user_svc}
+    sys_config: {module: sys, simpleName: config, daoFileName: config_dao, svcFileName: config_svc}
+    sys_dict: {module: sys, simpleName: dict, daoFileName: dict_dao, svcFileName: dict_svc}
