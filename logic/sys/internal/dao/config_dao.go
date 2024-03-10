@@ -5,7 +5,9 @@ import (
 	"reflect"
 
 	"github.com/fengjx/daox"
+	"github.com/fengjx/daox/sqlbuilder/ql"
 
+	"github.com/fengjx/glca/connom/consts"
 	"github.com/fengjx/glca/integration/db"
 	"github.com/fengjx/glca/logic/common/commpub"
 	"github.com/fengjx/glca/logic/sys/internal/data/entity"
@@ -16,6 +18,7 @@ var ConfigDao = newSysConfigDao()
 
 type sysConfigDao struct {
 	*daox.Dao
+	meta.SysConfigM
 }
 
 func registerConfigTableConfig() {
@@ -44,6 +47,7 @@ func registerConfigTableConfig() {
 
 func newSysConfigDao() *sysConfigDao {
 	inst := &sysConfigDao{}
+	inst.SysConfigM = meta.SysConfigMeta
 	inst.Dao = daox.NewDAO(
 		db.GetDefaultDB(),
 		"sys_config",
@@ -51,4 +55,17 @@ func newSysConfigDao() *sysConfigDao {
 		reflect.TypeOf(&entity.SysConfig{}),
 	)
 	return inst
+}
+
+// ListAll 查询所有生效配置
+func (dao sysConfigDao) ListAll(_ context.Context) ([]*entity.SysConfig, error) {
+	selector := dao.Selector().Where(ql.C().And(
+		ql.Col(dao.Status).EQ(consts.StatusNormal),
+	))
+	var list []*entity.SysConfig
+	err := dao.Select(&list, selector)
+	if err != nil {
+		return nil, err
+	}
+	return list, nil
 }

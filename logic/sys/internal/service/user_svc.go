@@ -12,21 +12,21 @@ import (
 	"github.com/fengjx/glca/logic/sys/internal/data/meta"
 )
 
-var SysUserService *sysUserService
+var SysUserSvc *sysUserService
 
 type sysUserService struct {
 }
 
 func init() {
-	SysUserService = newSysUserService()
+	SysUserSvc = newUserService()
 }
 
-func newSysUserService() *sysUserService {
+func newUserService() *sysUserService {
 	inst := &sysUserService{}
 	return inst
 }
 
-func (svc *sysUserService) GetByUsername(ctx context.Context, username string) (*entity.SysUser, error) {
+func (svc sysUserService) GetByUsername(ctx context.Context, username string) (*entity.SysUser, error) {
 	log := luchen.Logger(ctx)
 	user := &entity.SysUser{}
 	ok, err := dao.SysUserDao.GetByColumn(daox.OfKv(meta.SysUserMeta.Username, username), user)

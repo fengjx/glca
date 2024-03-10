@@ -13,7 +13,7 @@ type userProvider struct {
 }
 
 func (impl *userProvider) GetByUsername(ctx context.Context, username string) (*syspub.UserDetailInfoDTO, error) {
-	sysUser, err := service.SysUserService.GetByUsername(ctx, username)
+	sysUser, err := service.SysUserSvc.GetByUsername(ctx, username)
 	if err != nil {
 		return nil, err
 	}

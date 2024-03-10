@@ -1,7 +1,9 @@
 package consts
 
 const (
-	CommonStatusNormal  = "normal"
-	CommonStatusDisable = "disable"
-	CommonStatusDel     = "del"
+	StatusNormal  = "normal"
+	StatusDisable = "disable"
+
+	StatusYes = "yes"
+	StatusNo  = "no"
 )

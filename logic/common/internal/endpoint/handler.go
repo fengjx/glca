@@ -28,85 +28,57 @@ func (h *adminCommonHandler) Bind(router *luchen.ServeMux) {
 }
 
 func (h *adminCommonHandler) query() *httptransport.Server {
-	options := []httptransport.ServerOption{
-		httptransport.ServerErrorEncoder(http.ErrorEncoder),
-	}
-	return luchen.NewHTTPHandler(
+	return http.NewHandler(
 		MakeQueryEndpoint(),
 		luchen.DecodeHTTPJSONRequest[daox.QueryRecord],
 		luchen.EncodeHTTPJSONResponse(http.ResponseWrapper),
-		options...,
 	)
 }
 
 func (h *adminCommonHandler) get() *httptransport.Server {
-	options := []httptransport.ServerOption{
-		httptransport.ServerErrorEncoder(http.ErrorEncoder),
-	}
-	return luchen.NewHTTPHandler(
+	return http.NewHandler(
 		MakeGetEndpoint(),
 		luchen.DecodeHTTPJSONRequest[daox.GetRecord],
 		luchen.EncodeHTTPJSONResponse(http.ResponseWrapper),
-		options...,
 	)
 }
 
 func (h *adminCommonHandler) insert() *httptransport.Server {
-	options := []httptransport.ServerOption{
-		httptransport.ServerErrorEncoder(http.ErrorEncoder),
-	}
-	return luchen.NewHTTPHandler(
+	return http.NewHandler(
 		MakeInsertEndpoint(),
 		luchen.DecodeHTTPJSONRequest[daox.InsertRecord],
 		luchen.EncodeHTTPJSONResponse(http.ResponseWrapper),
-		options...,
 	)
 }
 
 func (h *adminCommonHandler) update() *httptransport.Server {
-	options := []httptransport.ServerOption{
-		httptransport.ServerErrorEncoder(http.ErrorEncoder),
-	}
-	return luchen.NewHTTPHandler(
+	return http.NewHandler(
 		MakeUpdateEndpoint(),
 		luchen.DecodeHTTPJSONRequest[daox.UpdateRecord],
 		luchen.EncodeHTTPJSONResponse(http.ResponseWrapper),
-		options...,
 	)
 }
 
 func (h *adminCommonHandler) batchUpdate() *httptransport.Server {
-	options := []httptransport.ServerOption{
-		httptransport.ServerErrorEncoder(http.ErrorEncoder),
-	}
-	return luchen.NewHTTPHandler(
+	return http.NewHandler(
 		MakeBatchUpdateEndpoint(),
 		luchen.DecodeHTTPJSONRequest[protocol.BatchUpdateReq],
 		luchen.EncodeHTTPJSONResponse(http.ResponseWrapper),
-		options...,
 	)
 }
 
 func (h *adminCommonHandler) delete() *httptransport.Server {
-	options := []httptransport.ServerOption{
-		httptransport.ServerErrorEncoder(http.ErrorEncoder),
-	}
-	return luchen.NewHTTPHandler(
+	return http.NewHandler(
 		MakeDeleteEndpoint(),
 		luchen.DecodeHTTPJSONRequest[daox.DeleteRecord],
 		luchen.EncodeHTTPJSONResponse(http.ResponseWrapper),
-		options...,
 	)
 }
 
 func (h *adminCommonHandler) deleteByIDs() *httptransport.Server {
-	options := []httptransport.ServerOption{
-		httptransport.ServerErrorEncoder(http.ErrorEncoder),
-	}
-	return luchen.NewHTTPHandler(
+	return http.NewHandler(
 		MakeDeleteByIDsEndpoint(),
 		luchen.DecodeHTTPJSONRequest[protocol.DeleteByIDsReq],
 		luchen.EncodeHTTPJSONResponse(http.ResponseWrapper),
-		options...,
 	)
 }

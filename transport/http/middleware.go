@@ -22,6 +22,15 @@ var (
 	}
 )
 
+func commonMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := current.WithProtocol(r.Context(), "http")
+		ctx = current.WithMethod(ctx, r.Method)
+		ctx = current.WithRequestAction(ctx, r.RequestURI)
+		next.ServeHTTP(w, r.WithContext(ctx))
+	})
+}
+
 func authMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log := luchen.Logger(r.Context())

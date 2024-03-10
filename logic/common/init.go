@@ -13,7 +13,7 @@ import (
 
 func Init(ctx context.Context, httpServer *luchen.HTTPServer) {
 	lifecycle.AddHook(lifecycle.InterfaceAware, func() {
-		commpub.CommonAPI = provider.CommonProvider
+		commpub.SetCommonAPI(provider.CommonProvider)
 	})
 	endpoint.Init(ctx, httpServer)
 }

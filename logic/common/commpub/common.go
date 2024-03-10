@@ -30,9 +30,6 @@ type commonAPI interface {
 }
 
 func SetCommonAPI(impl commonAPI) {
-	if CommonAPI != nil {
-		luchen.RootLogger().Warn("SetCommonAPI duplicate")
-		return
-	}
+	luchen.RootLogger().Info("set CommonAPI")
 	CommonAPI = impl
 }

@@ -34,7 +34,7 @@ func registerUserTableConfig() {
 	}
 	insertDataWrapper := func(ctx context.Context, src map[string]any) map[string]any {
 		if _, ok := src[m.Status]; !ok {
-			src[m.Status] = consts.CommonStatusNormal
+			src[m.Status] = consts.StatusNormal
 		}
 		pwd := utils.ToString(src[m.Pwd])
 		if len(pwd) == 0 {

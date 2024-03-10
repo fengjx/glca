@@ -5,10 +5,10 @@ import (
 	"strings"
 
 	"github.com/fengjx/luchen"
-	"github.com/go-kit/kit/endpoint"
 	"go.uber.org/zap"
 
 	"github.com/fengjx/glca/connom/auth"
+	"github.com/fengjx/glca/connom/endpoint"
 	"github.com/fengjx/glca/connom/errno"
 	"github.com/fengjx/glca/connom/kit"
 	"github.com/fengjx/glca/logic/login/internal/service"

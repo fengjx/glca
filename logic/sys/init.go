@@ -2,13 +2,16 @@ package sys
 
 import (
 	"context"
+	"time"
 
+	"github.com/fengjx/go-halo/hook"
 	"github.com/fengjx/luchen"
 
 	"github.com/fengjx/glca/connom/lifecycle"
 	"github.com/fengjx/glca/logic/sys/internal/dao"
 	"github.com/fengjx/glca/logic/sys/internal/endpoint"
 	"github.com/fengjx/glca/logic/sys/internal/provider"
+	"github.com/fengjx/glca/logic/sys/internal/service"
 	"github.com/fengjx/glca/logic/sys/syspub"
 )
 
@@ -19,5 +22,8 @@ func Init(ctx context.Context, httpServer *luchen.HTTPServer) {
 	lifecycle.AddHook(lifecycle.PostProcessor, func() {
 		dao.RegisterTableConfig()
 	})
+	lifecycle.AddHook(lifecycle.InitData, func() {
+		service.SysConfigSvc.RefreshConfig(ctx)
+	}, hook.WithInterval(time.Minute))
 	endpoint.Init(ctx, httpServer)
 }

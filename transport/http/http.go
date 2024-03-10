@@ -6,10 +6,12 @@ import (
 	"net/http"
 
 	"github.com/fengjx/go-halo/json"
+	httptransport "github.com/go-kit/kit/transport/http"
 	"go.uber.org/zap"
 
 	"github.com/fengjx/luchen"
 
+	"github.com/fengjx/glca/connom/endpoint"
 	"github.com/fengjx/glca/connom/errno"
 )
 
@@ -77,4 +79,20 @@ func WriteData(ctx context.Context, w http.ResponseWriter, httpCode int, data an
 	if err != nil {
 		log.Error("write http response err", zap.Error(err))
 	}
+}
+
+// NewHandler 创建 http handler
+func NewHandler(e endpoint.Endpoint,
+	dec httptransport.DecodeRequestFunc,
+	enc httptransport.EncodeResponseFunc,
+	options ...httptransport.ServerOption) *httptransport.Server {
+
+	options = append(options, httptransport.ServerErrorEncoder(ErrorEncoder))
+	targetEndpoint := endpoint.AccessMiddleware()(e)
+	return luchen.NewHTTPHandler(
+		targetEndpoint,
+		dec,
+		enc,
+		options...,
+	)
 }

@@ -8,20 +8,20 @@ import (
 	"github.com/fengjx/glca/transport/http"
 )
 
-type loginHandler struct {
+type configHandler struct {
 }
 
-func newLoginHandler() *loginHandler {
-	return &loginHandler{}
+func newConfigHandler() *configHandler {
+	return &configHandler{}
 }
 
-func (h *loginHandler) Bind(router *luchen.ServeMux) {
-	router.Handle(http.OpenAPI+"/login", h.login())
+func (h configHandler) Bind(router *luchen.ServeMux) {
+	router.Handle(http.OpenAPI+"/config/fetch", h.fetch())
 }
 
-func (h *loginHandler) login() *httptransport.Server {
+func (h configHandler) fetch() *httptransport.Server {
 	return http.NewHandler(
-		MakeLoginEndpoint(),
+		MakeConfigFetchEndpoint(),
 		luchen.DecodeHTTPJSONRequest[protocol.LoginReq],
 		luchen.EncodeHTTPJSONResponse(http.ResponseWrapper),
 	)

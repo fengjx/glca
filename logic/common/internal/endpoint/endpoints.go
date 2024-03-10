@@ -6,9 +6,9 @@ import (
 	"github.com/fengjx/daox"
 	"github.com/fengjx/go-halo/utils"
 	"github.com/fengjx/luchen"
-	"github.com/go-kit/kit/endpoint"
 	"go.uber.org/zap"
 
+	"github.com/fengjx/glca/connom/endpoint"
 	"github.com/fengjx/glca/connom/errno"
 	"github.com/fengjx/glca/logic/common/internal/service"
 	"github.com/fengjx/glca/protocol"
