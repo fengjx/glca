@@ -1,7 +1,6 @@
 package endpoint
 
 import (
-	"github.com/fengjx/daox"
 	"github.com/fengjx/luchen"
 	httptransport "github.com/go-kit/kit/transport/http"
 
@@ -30,7 +29,7 @@ func (h *adminCommonHandler) Bind(router *luchen.ServeMux) {
 func (h *adminCommonHandler) query() *httptransport.Server {
 	return http.NewHandler(
 		MakeQueryEndpoint(),
-		luchen.DecodeHTTPJSONRequest[daox.QueryRecord],
+		luchen.DecodeHTTPJSONRequest[protocol.QueryReq],
 		luchen.EncodeHTTPJSONResponse(http.ResponseWrapper),
 	)
 }
@@ -38,7 +37,7 @@ func (h *adminCommonHandler) query() *httptransport.Server {
 func (h *adminCommonHandler) get() *httptransport.Server {
 	return http.NewHandler(
 		MakeGetEndpoint(),
-		luchen.DecodeHTTPJSONRequest[daox.GetRecord],
+		luchen.DecodeHTTPJSONRequest[protocol.GetReq],
 		luchen.EncodeHTTPJSONResponse(http.ResponseWrapper),
 	)
 }
@@ -46,7 +45,7 @@ func (h *adminCommonHandler) get() *httptransport.Server {
 func (h *adminCommonHandler) insert() *httptransport.Server {
 	return http.NewHandler(
 		MakeInsertEndpoint(),
-		luchen.DecodeHTTPJSONRequest[daox.InsertRecord],
+		luchen.DecodeHTTPJSONRequest[protocol.InsertReq],
 		luchen.EncodeHTTPJSONResponse(http.ResponseWrapper),
 	)
 }
@@ -54,7 +53,7 @@ func (h *adminCommonHandler) insert() *httptransport.Server {
 func (h *adminCommonHandler) update() *httptransport.Server {
 	return http.NewHandler(
 		MakeUpdateEndpoint(),
-		luchen.DecodeHTTPJSONRequest[daox.UpdateRecord],
+		luchen.DecodeHTTPJSONRequest[protocol.UpdateReq],
 		luchen.EncodeHTTPJSONResponse(http.ResponseWrapper),
 	)
 }
@@ -62,7 +61,7 @@ func (h *adminCommonHandler) update() *httptransport.Server {
 func (h *adminCommonHandler) batchUpdate() *httptransport.Server {
 	return http.NewHandler(
 		MakeBatchUpdateEndpoint(),
-		luchen.DecodeHTTPJSONRequest[protocol.BatchUpdateReq],
+		luchen.DecodeHTTPJSONRequest[protocol.BatchUpdateWithIDReq],
 		luchen.EncodeHTTPJSONResponse(http.ResponseWrapper),
 	)
 }
@@ -70,7 +69,7 @@ func (h *adminCommonHandler) batchUpdate() *httptransport.Server {
 func (h *adminCommonHandler) delete() *httptransport.Server {
 	return http.NewHandler(
 		MakeDeleteEndpoint(),
-		luchen.DecodeHTTPJSONRequest[daox.DeleteRecord],
+		luchen.DecodeHTTPJSONRequest[protocol.DeleteReq],
 		luchen.EncodeHTTPJSONResponse(http.ResponseWrapper),
 	)
 }

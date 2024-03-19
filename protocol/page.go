@@ -10,17 +10,12 @@ type PageVO[T any] struct {
 	HasNext bool  `json:"has_next"`
 }
 
-func (v *PageVO[T]) ToAmisVO() *AmisPageVO[T] {
+func (v *PageVO[T]) ToAmisResp() *AmisPageResp[T] {
 	if v == nil {
 		return nil
 	}
-	return &AmisPageVO[T]{
+	return &AmisPageResp[T]{
 		Items: kit.OrElse[[]T](len(v.List) > 0, v.List, make([]T, 0)),
 		Total: v.Count,
 	}
-}
-
-type AmisPageVO[T any] struct {
-	Items []T   `json:"items"`
-	Total int64 `json:"total"`
 }

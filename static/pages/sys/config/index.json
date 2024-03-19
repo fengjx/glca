@@ -18,12 +18,21 @@
           ],
           "conditions": [
             {
-              "disable": "${!id}",
+              "disable": "${!scope}",
               "op": "and",
-              "field": "id",
+              "field": "scope",
               "condition_type": "eq",
               "vals": [
-                "id"
+                "${scope}"
+              ]
+            },
+            {
+              "disable": "${!key}",
+              "op": "and",
+              "field": "key",
+              "condition_type": "like",
+              "vals": [
+                "%${key}%"
               ]
             },
             {
@@ -52,10 +61,18 @@
               {
                 "type": "input-text",
                 "size": "sm",
-                "name": "id",
-                "label": "ID",
+                "name": "scope",
+                "label": "范围",
                 "clearable": true,
-                "placeholder": "ID搜索"
+                "placeholder": "范围搜索"
+              },
+              {
+                "type": "input-text",
+                "size": "sm",
+                "name": "key",
+                "label": "配置键",
+                "clearable": true,
+                "placeholder": "配置键搜索"
               },
               {
                 "type": "select",
@@ -83,7 +100,7 @@
             "icon": "fa fa-plus",
             "label": "新增",
             "dialog": {
-              "title": "新增用户",
+              "title": "新增",
               "body": {
                 "type": "form",
                 "name": "add-form",
@@ -105,22 +122,36 @@
                   {
                     "type": "input-text",
                     "name": "scope",
-                    "label": "范围"
+                    "label": "范围",
+                    "required": true
                   },
                   {
                     "type": "input-text",
                     "name": "key",
-                    "label": "配置键"
+                    "label": "配置键",
+                    "required": true
                   },
                   {
                     "type": "input-text",
                     "name": "value",
-                    "label": "配置值"
+                    "label": "配置值",
+                    "required": true
                   },
                   {
-                    "type": "input-text",
+                    "label": "状态",
+                    "type": "select",
                     "name": "status",
-                    "label": "配置状态"
+                    "required": true,
+                    "options": [
+                      {
+                        "label": "生效",
+                        "value": "normal"
+                      },
+                      {
+                        "label": "无效",
+                        "value": "disable"
+                      }
+                    ]
                   },
                   {
                     "type": "input-text",
@@ -170,7 +201,7 @@
       "columns": [
         {
           "name": "id",
-          "label": "-"
+          "label": "ID"
         },
         {
           "name": "scope",
@@ -185,20 +216,33 @@
           "label": "配置值"
         },
         {
-          "name": "status",
-          "label": "配置状态"
-        },
-        {
           "name": "remark",
           "label": "备注"
         },
         {
           "name": "utime",
-          "label": "更新时间"
+          "label": "更新时间",
+          "sortable": true,
+          "tpl": "${ctime | date:YYYY-MM-DD hh\\:mm\\:ss:x}"
         },
         {
           "name": "ctime",
-          "label": "创建时间"
+          "label": "创建时间",
+          "sortable": true,
+          "tpl": "${ctime | date:YYYY-MM-DD hh\\:mm\\:ss:x}"
+        },
+        {
+          "name": "status",
+          "label": "状态",
+          "width": 150,
+          "quickEdit": {
+            "mode": "inline",
+            "type": "select",
+            "options": [
+              "normal",
+              "disable"
+            ]
+          }
         },
         {
           "type": "operation",
@@ -218,7 +262,7 @@
                     {
                       "type": "static",
                       "name": "id",
-                      "label": "-"
+                      "label": "ID"
                     },
                     {
                       "type": "static",
@@ -248,12 +292,16 @@
                     {
                       "type": "static",
                       "name": "utime",
-                      "label": "更新时间"
+                      "label": "创建时间",
+                      "sortable": true,
+                      "tpl": "${utime | date:YYYY-MM-DD hh\\:mm\\:ss:x}"
                     },
                     {
                       "type": "static",
                       "name": "ctime",
-                      "label": "创建时间"
+                      "label": "创建时间",
+                      "sortable": true,
+                      "tpl": "${ctime | date:YYYY-MM-DD hh\\:mm\\:ss:x}"
                     }
                   ]
                 }
@@ -265,7 +313,7 @@
               "tooltip": "编辑",
               "actionType": "drawer",
               "drawer": {
-                "title": "修改记录",
+                "title": "修改",
                 "body": {
                   "type": "form",
                   "api": {
@@ -279,9 +327,7 @@
                         "key": "${key}",
                         "value": "${value}",
                         "status": "${status}",
-                        "remark": "${remark}",
-                        "utime": "${utime}",
-                        "ctime": "${ctime}"
+                        "remark": "${remark}"
                       },
                       "conditions": [
                         {
@@ -300,44 +346,48 @@
                   },
                   "body": [
                     {
-                      "type": "input-text",
+                      "type": "static",
                       "name": "id",
-                      "label": "-"
+                      "label": "ID"
                     },
                     {
                       "type": "input-text",
                       "name": "scope",
-                      "label": "范围"
+                      "label": "范围",
+                      "required": true
                     },
                     {
                       "type": "input-text",
                       "name": "key",
-                      "label": "配置键"
+                      "label": "配置键",
+                      "required": true
                     },
                     {
                       "type": "input-text",
                       "name": "value",
-                      "label": "配置值"
+                      "label": "配置值",
+                      "required": true
                     },
                     {
-                      "type": "input-text",
+                      "label": "状态",
+                      "type": "select",
                       "name": "status",
-                      "label": "配置状态"
+                      "required": true,
+                      "options": [
+                        {
+                          "label": "正常",
+                          "value": "normal"
+                        },
+                        {
+                          "label": "封禁",
+                          "value": "disable"
+                        }
+                      ]
                     },
                     {
                       "type": "input-text",
                       "name": "remark",
                       "label": "备注"
-                    },
-                    {
-                      "type": "input-text",
-                      "name": "utime",
-                      "label": "更新时间"
-                    },
-                    {
-                      "type": "input-text",
-                      "name": "ctime",
-                      "label": "创建时间"
                     }
                   ]
                 }

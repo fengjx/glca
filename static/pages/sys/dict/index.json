@@ -52,10 +52,18 @@
               {
                 "type": "input-text",
                 "size": "sm",
-                "name": "id",
-                "label": "ID",
+                "name": "group",
+                "label": "分组",
                 "clearable": true,
-                "placeholder": "ID搜索"
+                "placeholder": "分组搜索"
+              },
+              {
+                "type": "input-text",
+                "size": "sm",
+                "name": "value",
+                "label": "数据值",
+                "clearable": true,
+                "placeholder": "数据值搜索"
               },
               {
                 "type": "select",
@@ -64,11 +72,11 @@
                 "name": "status",
                 "options": [
                   {
-                    "label": "正常",
+                    "label": "生效",
                     "value": "normal"
                   },
                   {
-                    "label": "封禁",
+                    "label": "无效",
                     "value": "disable"
                   }
                 ]
@@ -205,10 +213,6 @@
           "label": "显示标签"
         },
         {
-          "name": "status",
-          "label": "数据状态"
-        },
-        {
           "name": "remark",
           "label": "备注"
         },
@@ -223,6 +227,19 @@
           "label": "创建时间",
           "sortable": true,
           "tpl": "${ctime | date:YYYY-MM-DD hh\\:mm\\:ss:x}"
+        },
+        {
+          "name": "status",
+          "label": "状态",
+          "width": 150,
+          "quickEdit": {
+            "mode": "inline",
+            "type": "select",
+            "options": [
+              "normal",
+              "disable"
+            ]
+          }
         },
         {
           "type": "operation",
@@ -277,12 +294,16 @@
                     {
                       "type": "static",
                       "name": "utime",
-                      "label": "更新时间"
+                      "label": "创建时间",
+                      "sortable": true,
+                      "tpl": "${utime | date:YYYY-MM-DD hh\\:mm\\:ss:x}"
                     },
                     {
                       "type": "static",
                       "name": "ctime",
-                      "label": "创建时间"
+                      "label": "创建时间",
+                      "sortable": true,
+                      "tpl": "${ctime | date:YYYY-MM-DD hh\\:mm\\:ss:x}"
                     }
                   ]
                 }

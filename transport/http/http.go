@@ -11,8 +11,8 @@ import (
 
 	"github.com/fengjx/luchen"
 
-	"github.com/fengjx/glca/connom/endpoint"
 	"github.com/fengjx/glca/connom/errno"
+	"github.com/fengjx/glca/current"
 )
 
 const (
@@ -82,13 +82,20 @@ func WriteData(ctx context.Context, w http.ResponseWriter, httpCode int, data an
 }
 
 // NewHandler 创建 http handler
-func NewHandler(e endpoint.Endpoint,
+func NewHandler(e luchen.Endpoint,
 	dec httptransport.DecodeRequestFunc,
 	enc httptransport.EncodeResponseFunc,
 	options ...httptransport.ServerOption) *httptransport.Server {
 
 	options = append(options, httptransport.ServerErrorEncoder(ErrorEncoder))
-	targetEndpoint := endpoint.AccessMiddleware()(e)
+	targetEndpoint := luchen.AccessMiddleware(&luchen.AccessLogOpt{
+		PrintResp: true,
+		ContextFields: map[string]luchen.GetValueFromContext{
+			"uid": func(ctx context.Context) any {
+				return current.UID(ctx)
+			},
+		},
+	})(e)
 	return luchen.NewHTTPHandler(
 		targetEndpoint,
 		dec,

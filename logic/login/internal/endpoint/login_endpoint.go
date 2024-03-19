@@ -8,7 +8,6 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/fengjx/glca/connom/auth"
-	"github.com/fengjx/glca/connom/endpoint"
 	"github.com/fengjx/glca/connom/errno"
 	"github.com/fengjx/glca/connom/kit"
 	"github.com/fengjx/glca/logic/login/internal/service"
@@ -16,7 +15,7 @@ import (
 	"github.com/fengjx/glca/protocol"
 )
 
-func MakeLoginEndpoint() endpoint.Endpoint {
+func MakeLoginEndpoint() luchen.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(*protocol.LoginReq)
 		log := luchen.Logger(ctx).With(zap.String("username", req.Username))

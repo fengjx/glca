@@ -117,7 +117,7 @@
             "icon": "fa fa-plus",
             "label": "新增",
             "dialog": {
-              "title": "新增用户",
+              "title": "新增",
               "body": {
                 "type": "form",
                 "name": "sample-edit-form",
@@ -245,6 +245,12 @@
           "label": "昵称"
         },
         {
+          "name": "utime",
+          "label": "更新时间",
+          "sortable": true,
+          "tpl": "${utime | date:YYYY-MM-DD hh\\:mm\\:ss:x}"
+        },
+        {
           "name": "ctime",
           "label": "创建时间",
           "sortable": true,
@@ -302,6 +308,13 @@
                       "type": "static",
                       "name": "status",
                       "label": "状态"
+                    },
+                    {
+                      "type": "static",
+                      "name": "utime",
+                      "label": "更新时间",
+                      "sortable": true,
+                      "tpl": "${utime | date:YYYY-MM-DD hh\\:mm\\:ss:x}"
                     },
                     {
                       "type": "static",

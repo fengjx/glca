@@ -6,9 +6,9 @@ import (
 	"github.com/fengjx/daox"
 	"github.com/fengjx/go-halo/utils"
 	"github.com/fengjx/luchen"
+	"github.com/go-kit/kit/endpoint"
 	"go.uber.org/zap"
 
-	"github.com/fengjx/glca/connom/endpoint"
 	"github.com/fengjx/glca/connom/errno"
 	"github.com/fengjx/glca/logic/common/internal/service"
 	"github.com/fengjx/glca/protocol"
@@ -18,64 +18,67 @@ func Init(_ context.Context, httpServer *luchen.HTTPServer) {
 	httpServer.Handler(newAdminCommonHandler())
 }
 
-func MakeQueryEndpoint() endpoint.Endpoint {
+func MakeQueryEndpoint() luchen.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
-		query := request.(*daox.QueryRecord)
-		pageVO, err := service.CommonService.Query(ctx, *query)
+		query := request.(*protocol.QueryReq)
+		pageVO, err := service.CommonService.Query(ctx, query.QueryRecord)
 		if err != nil {
 			return nil, err
 		}
-		return pageVO.ToAmisVO(), nil
+		return pageVO.ToAmisResp(), nil
 	}
 }
 
 func MakeGetEndpoint() endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
-		record := request.(*daox.GetRecord)
-		data, err := service.CommonService.Get(ctx, *record)
+		record := request.(*protocol.GetReq)
+		data, err := service.CommonService.Get(ctx, record.GetRecord)
 		if err != nil {
 			return nil, err
 		}
-		return data, nil
+		return &protocol.GetResp{
+			Record: data,
+		}, nil
 	}
 }
 
 func MakeInsertEndpoint() endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
-		record := request.(*daox.InsertRecord)
-		id, err := service.CommonService.Insert(ctx, *record)
+		record := request.(*protocol.InsertReq)
+		id, err := service.CommonService.Insert(ctx, record.InsertRecord)
 		if err != nil {
 			return nil, err
 		}
-		return map[string]any{
-			"id": id,
+		return &protocol.InsertResp{
+			ID: id,
 		}, nil
 	}
 }
 
 func MakeUpdateEndpoint() endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
-		record := request.(*daox.UpdateRecord)
-		affected, err := service.CommonService.Update(ctx, *record)
+		record := request.(*protocol.UpdateReq)
+		affected, err := service.CommonService.Update(ctx, record.UpdateRecord)
 		if err != nil {
 			return nil, err
 		}
-		return map[string]any{
-			"affected": affected,
+		return &protocol.UpdateResp{
+			Affected: affected,
 		}, nil
 	}
 }
 
+// MakeBatchUpdateEndpoint 批量更新，要求必须包含主键字段
 func MakeBatchUpdateEndpoint() endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		log := luchen.Logger(ctx)
-		req := request.(*protocol.BatchUpdateReq)
+		req := request.(*protocol.BatchUpdateWithIDReq)
 		config, ok := service.CommonService.GetTableConfig(req.TableName)
 		if !ok {
 			log.Warn(errno.TableNotSupportErr.Msg, zap.String("table_name", req.TableName))
 			return nil, errno.TableNotSupportErr
 		}
-		ret := map[any]any{}
+		ret := map[any]int64{}
 		if len(req.Rows) == 0 {
 			return ret, nil
 		}
@@ -105,19 +108,21 @@ func MakeBatchUpdateEndpoint() endpoint.Endpoint {
 			}
 			ret[id] = affected
 		}
-		return ret, nil
+		return &protocol.BatchUpdateResp{
+			Affected: ret,
+		}, nil
 	}
 }
 
 func MakeDeleteEndpoint() endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
-		record := request.(*daox.DeleteRecord)
-		affected, err := service.CommonService.Delete(ctx, *record)
+		record := request.(*protocol.DeleteReq)
+		affected, err := service.CommonService.Delete(ctx, record.DeleteRecord)
 		if err != nil {
 			return nil, err
 		}
-		return map[string]any{
-			"affected": affected,
+		return &protocol.DeleteResp{
+			Affected: affected,
 		}, nil
 	}
 }
@@ -157,8 +162,8 @@ func MakeDeleteByIDsEndpoint() endpoint.Endpoint {
 			return nil, err
 		}
 		log.Infof("delete table[%s], ids:[%v]", req.TableName, ids)
-		return map[string]any{
-			"affected": affected,
+		return &protocol.DeleteByIDsResp{
+			Affected: affected,
 		}, nil
 	}
 }
